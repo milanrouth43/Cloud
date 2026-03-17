@@ -1,0 +1,12 @@
+{
+  "name": "blue-green-app",
+  "version": "1.0.0",
+  "description": "Elastic Beanstalk Practical",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
