@@ -1,0 +1,31 @@
+cat <<EOF > bindings.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dev-access-test-binding
+  namespace: test
+subjects:
+- kind: ServiceAccount
+  name: dev-sa
+  namespace: dev
+roleRef:
+  kind: Role
+  name: read-pods-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: test-access-dev-binding
+  namespace: dev
+subjects:
+- kind: ServiceAccount
+  name: test-sa
+  namespace: test
+roleRef:
+  kind: Role
+  name: read-pods-role
+  apiGroup: rbac.authorization.k8s.io
+EOF
+
+kubectl apply -f bindings.yaml

@@ -1,0 +1,14 @@
+cat <<EOF > main.tf
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_instance" "automated_server" {
+  ami           = "ami-0e2c8ccd4e1223ca0" # Standard Ubuntu 24.04 AMI
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "Terraform-Managed-Server"
+  }
+}
+EOF

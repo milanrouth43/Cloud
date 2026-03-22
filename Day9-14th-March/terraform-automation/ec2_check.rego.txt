@@ -1,0 +1,13 @@
+cat <<EOF > policy/ec2_check.rego
+package main
+
+import rego.v1
+
+deny contains msg if {
+    some i
+    resource := input.planned_values.root_module.resources[i]
+    resource.type == "aws_instance"
+    resource.values.instance_type != "t2.micro"
+    msg := sprintf("Security Alert: Instance '%v' is using %v. Only t2.micro is allowed!", [resource.name, resource.values.instance_type])
+}
+EOF

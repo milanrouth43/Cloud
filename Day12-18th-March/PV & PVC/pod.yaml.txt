@@ -1,0 +1,17 @@
+cat <<EOF > pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lab-pod
+spec:
+  containers:
+    - name: web-container
+      image: nginx
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: lab-storage
+  volumes:
+    - name: lab-storage
+      persistentVolumeClaim:
+        claimName: lab-pvc
+EOF

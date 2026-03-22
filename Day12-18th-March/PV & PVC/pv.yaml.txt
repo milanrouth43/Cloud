@@ -1,0 +1,13 @@
+cat <<EOF > pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lab-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/lab-data"
+EOF

@@ -1,0 +1,14 @@
+cat <<EOF > pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lab-pvc
+spec:
+  storageClassName: ""
+  volumeName: lab-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+EOF
