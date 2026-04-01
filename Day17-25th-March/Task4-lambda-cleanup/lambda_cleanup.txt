@@ -1,0 +1,66 @@
+import boto3
+
+def has_protection_tag(tags):
+    if not tags:
+        return False
+    for tag in tags:
+        if tag['Key'] == 'Imp' and tag['Value'] == 'testing':
+            return True
+    return False
+
+def lambda_handler(event, context):
+    print("Starting account cleanup...")
+    
+    # --- 1. Cleanup EC2 Instances ---
+    ec2_client = boto3.client('ec2')
+    regions = [r['RegionName'] for r in ec2_client.describe_regions()['Regions']]
+
+    for region in regions:
+        print(f"\nChecking EC2s in region: {region}")
+        ec2 = boto3.client('ec2', region_name=region)
+        try:
+            reservations = ec2.describe_instances()['Reservations']
+            for reservation in reservations:
+                for instance in reservation['Instances']:
+                    instance_id = instance['InstanceId']
+                    tags = instance.get('Tags', [])
+
+                    if has_protection_tag(tags):
+                        print(f"Skipping protected EC2: {instance_id}")
+                    # Only terminate if it's currently running or stopped
+                    elif instance['State']['Name'] not in ['terminated', 'shutting-down']:
+                        print(f"Terminating EC2: {instance_id}")
+                        ec2.terminate_instances(InstanceIds=[instance_id])
+        except Exception as e:
+            print(f"EC2 error in {region}: {e}")
+
+    # --- 2. Cleanup S3 Buckets ---
+    print("\nChecking S3 Buckets...")
+    s3 = boto3.resource('s3')
+    s3_client = boto3.client('s3')
+
+    for bucket in s3.buckets.all():
+        bucket_name = bucket.name
+        try:
+            # Try to get tags, if none exist it will throw an exception
+            try:
+                tags = s3_client.get_bucket_tagging(Bucket=bucket_name)['TagSet']
+            except:
+                tags = []
+
+            if has_protection_tag(tags):
+                print(f"Skipping protected S3 bucket: {bucket_name}")
+            else:
+                print(f"Emptying and Deleting bucket: {bucket_name}")
+                # Force delete all objects and versions inside the bucket first
+                bucket.objects.all().delete()
+                bucket.object_versions.all().delete()
+                # Now delete the empty bucket
+                bucket.delete()
+        except Exception as e:
+            print(f"S3 error ({bucket_name}): {e}")
+
+    return {
+        'statusCode': 200,
+        'body': 'Cleanup Completed Successfully'
+    }
