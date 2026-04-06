@@ -1,0 +1,295 @@
+#!/usr/bin/env python3
+"""
+IAM Policy Analyzer - Least Privilege Auditor
+Supports AWS IAM JSON and Azure RBAC JSON formats.
+Designed for Cloud Security Fundamentals Course - Day 1 Session 1.
+
+Security Best Practices:
+- Never hardcode credentials; use environment variables or IAM roles.
+- Validate policy syntax before deployment.
+- Test in non-production first.
+
+Usage:
+    python iam-policy-analyzer.py --policy policy.json --platform aws
+    python iam-policy-analyzer.py --policy role.json --platform azure
+"""
+
+import json
+import argparse
+import sys
+import os
+from typing import Dict, List, Any, Optional
+from datetime import datetime
+
+# Configuration for High-Risk Actions
+# These actions typically require explicit justification and resource constraints
+HIGH_RISK_ACTIONS = {
+    'aws': [
+        'iam:CreateUser', 'iam:DeleteUser', 'iam:PutUserPolicy', 'iam:AttachUserPolicy',
+        'sts:AssumeRole', 'kms:Decrypt', 'kms:DisableKey', 's3:DeleteBucket', 
+        'ec2:TerminateInstances', 'organizations:LeaveOrganization', 'logs:DeleteLogGroup', 'AmazonEC2FullAccess'
+    ],
+    'azure': [
+        'Microsoft.Authorization/roleAssignments/write',
+        'Microsoft.Authorization/roleDefinitions/write',
+        'Microsoft.KeyVault/vaults/secrets/read',
+        'Microsoft.KeyVault/vaults/secrets/delete',
+        'Microsoft.Storage/storageAccounts/delete',
+        'Microsoft.Compute/virtualMachines/delete',
+        'Microsoft.Resources/subscriptions/delete',
+        'microsoft.agentRegistry/allEntities/allProperties/allTasks'
+    ]
+}
+
+# Wildcard patterns that indicate over-permissioning
+WILDCARD_PATTERNS = ['*', '*:*', 'actions: *']
+
+class PolicyAnalyzer:
+    def __init__(self, platform: str):
+        self.platform = platform.lower()
+        self.findings = []
+        self.score = 100  # Start with perfect score, deduct for findings
+
+    def load_policy(self, file_path: str) -> Dict:
+        """Load and parse policy file with robust error handling"""
+        if not os.path.exists(file_path):
+            print(f"❌ Error: Policy file '{file_path}' not found")
+            sys.exit(1)
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except json.JSONDecodeError as e:
+            print(f"❌ Error: Invalid JSON format - {e}")
+            sys.exit(1)
+        except Exception as e:
+            print(f"❌ Error: Unexpected error reading file - {e}")
+            sys.exit(1)
+
+    def analyze_aws_policy(self, policy: Dict) -> List[str]:
+        """Analyze AWS IAM policy for least privilege violations"""
+        findings = []
+
+        # Support AttachedPolicies format (managed policies attached to an identity)
+        if 'AttachedPolicies' in policy:
+            attached = policy.get('AttachedPolicies') or []
+            if not isinstance(attached, list):
+                attached = [attached]
+
+            for idx, p in enumerate(attached):
+                name = p.get('PolicyName') or ''
+                arn = p.get('PolicyArn') or ''
+
+                # Check for well-known high-risk managed policy names or ARN fragments
+                normalized = f"{name} {arn}".lower()
+
+                # AdministratorAccess is critical
+                if 'administratoraccess' in normalized:
+                    findings.append(f"⚠️ CRITICAL [AttachedPolicy {idx}]: Attached '{name or arn}' grants full administrative access")
+                    self.score -= 35
+                    continue
+
+                # Detect other high-risk managed policies listed in HIGH_RISK_ACTIONS
+                for high in HIGH_RISK_ACTIONS['aws']:
+                    # HIGH_RISK_ACTIONS contains action names and some managed policy names
+                    if isinstance(high, str) and high.lower() in normalized:
+                        findings.append(f"🔴 HIGH [AttachedPolicy {idx}]: Attached managed policy '{name or arn}' is considered high-risk ({high})")
+                        self.score -= 20
+                        break
+
+            return findings
+
+        # Fallback: Inline policy document format (Statement)
+        statements = policy.get('Statement', [])
+        if not isinstance(statements, list):
+            statements = [statements]
+
+        for idx, statement in enumerate(statements):
+            actions = statement.get('Action', [])
+            if isinstance(actions, str):
+                actions = [actions]
+
+            resources = statement.get('Resource', '*')
+            if isinstance(resources, str):
+                resources = [resources]
+
+            # Check 1: Wildcard Actions
+            if '*' in actions or any(a == '*' or a == '*:*' for a in actions):
+                findings.append(f"⚠️ CRITICAL [Statement {idx}]: Policy allows wildcard actions - violates least privilege")
+                self.score -= 30
+
+            # Check 2: Wildcard Resources with Sensitive Actions
+            if '*' in resources:
+                sensitive_actions = [a for a in actions if a in HIGH_RISK_ACTIONS['aws']]
+                if sensitive_actions:
+                    findings.append(f"🔴 HIGH [Statement {idx}]: Unrestricted resource access for sensitive actions: {sensitive_actions}")
+                    self.score -= 20
+
+            # Check 3: Missing Conditions for sensitive actions
+            if 'Condition' not in statement and any(a in HIGH_RISK_ACTIONS['aws'] for a in actions):
+                findings.append(f"🟡 MEDIUM [Statement {idx}]: Sensitive actions lack Condition keys (e.g., MFA, IP restriction)")
+                self.score -= 10
+
+        return findings
+
+    def analyze_azure_policy(self, policy: Dict) -> List[str]:
+        """Analyze Azure RBAC role definition for least privilege violations"""
+        findings = []
+        # Azure Role Definition structure differs depending on source:
+        # 1) Role definition JSONs use 'permissions' with 'actions'/'dataActions'
+        # 2) Microsoft Graph roleAssignments responses contain a 'value' list
+
+        def is_wildcard_like(action: str) -> bool:
+            if not isinstance(action, str):
+                return False
+            low = action.lower()
+            # Common patterns that imply broad/wildcard permissions
+            return (
+                low == '*' or
+                '*:' in low or
+                '/alltasks' in low or
+                '/allproperties' in low or
+                '/allentities' in low or
+                low.endswith('/all')
+            )
+
+        # Case A: Graph roleAssignments response (contains 'value')
+        if 'value' in policy and isinstance(policy.get('value'), list):
+            for idx, assignment in enumerate(policy.get('value') or []):
+                rd = assignment.get('roleDefinition', {}) or {}
+                role_name = rd.get('displayName') or rd.get('templateId') or rd.get('id', f'role_{idx}')
+                role_permissions = rd.get('rolePermissions', [])
+                resource_scopes = rd.get('resourceScopes') or assignment.get('directoryScopeId')
+
+                if not isinstance(role_permissions, list):
+                    role_permissions = [role_permissions]
+
+                for pidx, perm in enumerate(role_permissions):
+                    allowed = perm.get('allowedResourceActions', []) or []
+                    # normalize to list
+                    if not isinstance(allowed, list):
+                        allowed = [allowed]
+
+                    # Check: wildcard-like allowed actions
+                    if any(is_wildcard_like(a) for a in allowed):
+                        findings.append(
+                            f"⚠️ CRITICAL [Assignment {idx} Role {role_name} Perm {pidx}]: Role allows broad actions (wildcard-like) - violates least privilege"
+                        )
+                        self.score -= 30
+
+                    # Check: sensitive/high-risk allowed actions
+                    sensitive_actions = [a for a in allowed if any(high.lower() in a.lower() for high in HIGH_RISK_ACTIONS['azure'])]
+                    if sensitive_actions:
+                        findings.append(f"🔴 HIGH [Assignment {idx} Role {role_name}]: Role includes sensitive actions: {sensitive_actions}")
+                        self.score -= 20
+
+                        # If role is tenant-scoped (resource scope contains '/') flag severity
+                        scopes = resource_scopes or []
+                        if isinstance(scopes, list) and '/' in scopes:
+                            findings.append(f"🔴 HIGH [Assignment {idx} Role {role_name}]: Role is tenant-scoped ('/') and contains sensitive actions")
+                            self.score -= 15
+
+                        # Missing condition (null) increases risk
+                        cond = perm.get('condition', None)
+                        if cond is None:
+                            findings.append(f"🟡 MEDIUM [Assignment {idx} Role {role_name} Perm {pidx}]: Sensitive actions lack Condition (e.g., MFA, assignment filters)")
+                            self.score -= 10
+
+            return findings
+
+        # Case B: Role definition / custom role JSON (legacy structure)
+        permissions = policy.get('permissions', [])
+        role_name = policy.get('roleName', policy.get('displayName', 'Unknown'))
+
+        if not isinstance(permissions, list):
+            permissions = [permissions]
+
+        for perm in permissions:
+            actions = perm.get('actions', [])
+            data_actions = perm.get('dataActions', [])
+            all_actions = (actions or []) + (data_actions or [])
+
+            # Check 1: Wildcard Actions
+            if any(is_wildcard_like(a) for a in all_actions):
+                findings.append(f"⚠️ CRITICAL [Role {role_name}]: Role allows broad/wildcard actions - violates least privilege")
+                self.score -= 30
+            
+            # Check 2: Sensitive Actions without Scope
+            sensitive_actions = [a for a in all_actions if any(high.lower() in a.lower() for high in HIGH_RISK_ACTIONS['azure'])]
+            if sensitive_actions:
+                findings.append(f"🔴 HIGH [Role {role_name}]: Role includes sensitive actions: {sensitive_actions}")
+                self.score -= 20
+
+        return findings
+
+    def generate_report(self, findings: List[str], filename: str) -> str:
+        """Generate a text report of findings"""
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        report_name = f"audit_report_{timestamp}.txt"
+        
+        with open(report_name, 'w', encoding='utf-8') as f:
+            f.write(f"IAM Policy Audit Report\n")
+            f.write(f"=======================\n")
+            f.write(f"File: {filename}\n")
+            f.write(f"Platform: {self.platform.upper()}\n")
+            f.write(f"Security Score: {self.score}/100\n")
+            f.write(f"Date: {datetime.now().isoformat()}\n\n")
+            
+            if not findings:
+                f.write("✅ No critical least-privilege violations detected.\n")
+            else:
+                f.write(f"Found {len(findings)} issue(s):\n\n")
+                for finding in findings:
+                    f.write(f"- {finding}\n")
+        
+        return report_name
+
+def main():
+    parser = argparse.ArgumentParser(description='IAM Policy Least Privilege Auditor')
+    parser.add_argument('--policy', required=True, help='Path to policy JSON file')
+    parser.add_argument('--platform', choices=['aws', 'azure'], required=True, help='Cloud platform')
+    parser.add_argument('--output', help='Optional: Save report to file (default: auto-generated)')
+    parser.add_argument('--verbose', action='store_true', help='Show detailed analysis steps')
+    
+    args = parser.parse_args()
+    
+    # Initialize Analyzer
+    analyzer = PolicyAnalyzer(args.platform)
+    
+    # Load Policy
+    if args.verbose:
+        print(f"🔍 Loading policy file: {args.policy}")
+    policy = analyzer.load_policy(args.policy)
+    
+    # Run Analysis
+    print(f"🔍 Analyzing {args.platform.upper()} policy: {args.policy}")
+    print("=" * 60)
+    
+    if args.platform == 'aws':
+        findings = analyzer.analyze_aws_policy(policy)
+    elif args.platform == 'azure':
+        findings = analyzer.analyze_azure_policy(policy)
+    else:
+        print("❌ Unsupported platform")
+        sys.exit(1)
+    
+    # Output Results
+    if not findings:
+        print("✅ No critical least-privilege violations detected")
+        print(f"🏆 Security Score: {analyzer.score}/100")
+    else:
+        print(f"⚠️ Found {len(findings)} issue(s):")
+        for finding in findings:
+            print(f"  {finding}")
+        print(f"📉 Security Score: {analyzer.score}/100")
+    
+    # Generate Report
+    report_file = args.output if args.output else analyzer.generate_report(findings, args.policy)
+    print(f"📝 Full report saved to: {report_file}")
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n⚠️ Analysis interrupted by user")
+        sys.exit(130)

@@ -1,0 +1,385 @@
+{
+  "id": "1a08d9e8-a4ea-4682-b671-1a9647236ae4",
+  "title": "New MCQ Test",
+  "questions": [
+    {
+      "id": 1,
+      "text": "During your Capgemini M1 training, your team is discussing whether to continue using on-premises servers or migrate to the cloud for a new e-commerce application that experiences unpredictable traffic spikes during sales. The application needs quick resource provisioning without large upfront capital investment, and the team wants to pay only for actual usage while maintaining full control over the operating system and applications. How should you handle this situation while applying cloud computing principles?",
+      "options": {
+        "A": "You recommend migrating to a public cloud using the pay-as-you-go model so the team can provision resources instantly on demand and pay only for the hours and storage actually consumed.",
+        "B": "You suggest building a private cloud where the organization invests in its own physical infrastructure and maintains everything internally to achieve complete isolation.",
+        "C": "You advise using a hybrid cloud approach where the application runs on public cloud during sales but sensitive data stays in the private cloud for compliance reasons.",
+        "D": "You propose sticking with traditional on-premises servers and simply adding more hardware during peak times because it avoids any dependency on external providers."
+      },
+      "correctAnswer": "A",
+      "tag": "Cloud Principles & Pay-as-you-go",
+      "difficulty": "Medium  \r\nBrief Explation**: Option A correctly applies the pay-as-you-go and on-demand self-service principles from your notes, allowing instant provisioning without high initial investment. B and D ignore cloud benefits and revert to traditional problems; C is valid for hybrid but not the primary need described."
+    },
+    {
+      "id": 2,
+      "text": "Your project lead asks you to explain the difference between Type-1 and Type-2 hypervisors during a virtualization session. The team is planning to run multiple virtual machines on a single physical server and wants maximum performance with minimal overhead while ensuring the hypervisor directly manages hardware resources. Which approach should you recommend?",
+      "options": {
+        "A": "You recommend using a Type-1 bare-metal hypervisor such as VMware ESXi or KVM because it runs directly on the hardware without a host OS, providing better performance and direct resource allocation to the guest VMs.",
+        "B": "You suggest using a Type-2 hosted hypervisor such as Oracle VirtualBox because it is easier to install on top of an existing operating system and suitable for development environments.",
+        "C": "You advise choosing a hybrid hypervisor such as Microsoft Hyper-V because it combines features of both Type-1 and Type-2 for maximum flexibility.",
+        "D": "You propose avoiding hypervisors altogether and running everything directly on physical hardware to eliminate any virtualization overhead."
+      },
+      "correctAnswer": "A",
+      "tag": "Virtualization – Hypervisor Types",
+      "difficulty": "Medium  \r\nBrief Explation**: Your notes clearly state Type-1 (bare-metal) hypervisors run directly on hardware for better performance. Type-2 adds host OS overhead (B), hybrid is a combination (C), and avoiding virtualization contradicts the scenario (D)."
+    },
+    {
+      "id": 3,
+      "text": "In a team meeting, the architect wants to decide the best cloud deployment model for a banking application that must comply with strict regulatory requirements for data residency in India while still benefiting from elastic scaling during high transaction periods. The application processes sensitive customer data but also needs occasional burst capacity. How should the team proceed?",
+      "options": {
+        "A": "You recommend a hybrid cloud model where the core banking data and compliance-critical workloads run in a private cloud while non-sensitive, seasonal workloads burst into the public cloud for scalability.",
+        "B": "You suggest using only a public cloud like AWS Mumbai region because it offers the lowest cost and easiest management for all workloads.",
+        "C": "You propose a community cloud shared among multiple Indian banks so they can jointly invest in infrastructure that meets regulatory standards.",
+        "D": "You advise a pure private cloud built and maintained entirely by the bank’s own team to guarantee complete data isolation."
+      },
+      "correctAnswer": "A",
+      "tag": "Hybrid Cloud & Regulatory Compliance",
+      "difficulty": "Medium  \r\nBrief Explation**: Hybrid cloud matches the notes’ use-case for “Data security + scalability + Regulatory compliance”. Pure public (B) violates data residency; community (C) is for multiple organizations; pure private (D) lacks elasticity."
+    },
+    {
+      "id": 4,
+      "text": "Your manager asks you to choose the correct AWS service model for a development team that wants a ready-made environment to build, test, and deploy applications without managing operating systems, middleware, or servers. The team will only handle their own application code and data. Which model should you select?",
+      "options": {
+        "A": "You recommend Platform as a Service (PaaS) such as AWS Elastic Beanstalk or RDS so the team can focus solely on application development while AWS manages the runtime, OS, middleware, servers, and networking.",
+        "B": "You suggest Infrastructure as a Service (IaaS) such as EC2 because the team needs full control over the operating system and middleware.",
+        "C": "You propose Software as a Service (SaaS) such as Google Workspace because the team can simply use the application without any deployment effort.",
+        "D": "You advise building everything from scratch on physical servers to maintain maximum customization and avoid vendor lock-in."
+      },
+      "correctAnswer": "A",
+      "tag": "Cloud Service Models (PaaS)",
+      "difficulty": "Medium  \r\nBrief Explation**: PaaS is explicitly defined in the notes as providing a ready-made environment where the client manages only application and data. IaaS requires OS management (B); SaaS is fully managed software (C)."
+    },
+    {
+      "id": 5,
+      "text": "During an EC2 hands-on lab, you launch a new Linux instance and download the .pem private key file. Later you realize you need to connect from a Windows machine using PuTTY. The team also wants to ensure secure SSH access without passwords. What is the correct next step?",
+      "options": {
+        "A": "You convert the .pem file to .ppk format using PuTTYgen, then use the .ppk file in PuTTY to connect to the instance via SSH, ensuring key-pair-based authentication remains secure.",
+        "B": "You upload the original .pem file directly into PuTTY without conversion because PuTTY supports both formats equally well.",
+        "C": "You create a new key pair directly from the AWS console in PPK format and replace the existing one on the instance.",
+        "D": "You disable key-pair authentication and enable password-based login for simpler Windows connectivity."
+      },
+      "correctAnswer": "A",
+      "tag": "EC2 Key Pairs & PEM/PPK",
+      "difficulty": "Hard  \r\nBrief Explation**: Notes specify converting .pem to .ppk with PuTTYgen for Windows/PuTTY. Direct .pem use (B), new key pair (C), or passwords (D) are either incorrect or less secure."
+    },
+    {
+      "id": 6,
+      "text": "Your team has just launched an EC2 instance using the Quick Start Amazon Linux 2023 AMI and installed Nginx to host a static website. After copying the website files to /var/www/html and starting the service, the site does not load when accessing the public IP. The security group allows SSH but not HTTP traffic. How should you resolve this?",
+      "options": {
+        "A": "You edit the security group to add an inbound rule allowing HTTP (port 80) from Anywhere-IPv4, then verify the Nginx service is running and the index.html file is correctly placed in /var/www/html.",
+        "B": "You stop and restart the instance hoping the default security group settings will automatically allow web traffic.",
+        "C": "You create a new AMI from the current instance and launch a fresh one with different network settings.",
+        "D": "You switch to a different AMI that already includes pre-configured web server ports."
+      },
+      "correctAnswer": "A",
+      "tag": "Static Website Deployment on EC2 (Nginx + Security Group)",
+      "difficulty": "Hard  \r\nBrief Explation**: The notes detail the exact steps: add HTTP rule to security group, verify Nginx is running, and files are in /var/www/html. Restarting the instance (B) or new AMI (C/D) do not fix the missing inbound rule."
+    },
+    {
+      "id": 7,
+      "text": "You have created a new 10 GiB EBS volume and attached it to an Ubuntu EC2 instance as /dev/nvme1n1. The volume needs to be formatted, mounted at /mnt/myvolume, and configured to mount automatically after reboot. What is the correct sequence of commands?",
+      "options": {
+        "A": "You run lsblk to identify the device, create the mount point with mkdir, format it with sudo mkfs.ext4 /dev/nvme1n1, mount it with sudo mount /dev/nvme1n1 /mnt/myvolume, obtain the UUID with blkid, and add the UUID entry to /etc/fstab.",
+        "B": "You skip formatting and directly mount the raw device because EBS volumes come pre-formatted.",
+        "C": "You use the AWS console to mount the volume automatically without running any Linux commands.",
+        "D": "You format the volume with NTFS because it is the default for AWS Linux instances."
+      },
+      "correctAnswer": "A",
+      "tag": "EBS Volume Mounting & fstab in Ubuntu",
+      "difficulty": "Hard  \r\nBrief Explation**: Your notes give the precise sequence: lsblk → mkdir → mkfs.ext4 → mount → blkid → /etc/fstab with UUID. Skipping formatting (B), console mounting (C), or NTFS (D) are wrong for Linux."
+    },
+    {
+      "id": 8,
+      "text": "A new team member is confused about the difference between a public IP, private IP, and Elastic IP on an EC2 instance. The application needs a fixed public address that survives instance stop/start cycles. Which address type should you recommend?",
+      "options": {
+        "A": "You recommend assigning an Elastic IP to the instance because it is static, remains associated with your account, and can be reassigned even after the instance is stopped and started.",
+        "B": "You suggest relying on the automatically assigned public IP because it is free and sufficient for most use cases.",
+        "C": "You advise using only the private IP for all external communication to improve security.",
+        "D": "You propose using a secondary network interface with its own public IP instead of an Elastic IP."
+      },
+      "correctAnswer": "A",
+      "tag": "EC2 Elastic IP vs Public IP",
+      "difficulty": "Hard  \r\nBrief Explation**: Notes state Elastic IP is static and persists across stop/start; public IP changes (B), private IP is internal only (C)."
+    },
+    {
+      "id": 9,
+      "text": "Your Capgemini project requires launching multiple identical web servers quickly. You have already configured one EC2 instance with Nginx and the application code. What is the most efficient way to replicate this setup across new instances?",
+      "options": {
+        "A": "You create a custom AMI from the configured instance and launch all new instances using that AMI to ensure identical OS, software, and application settings.",
+        "B": "You manually repeat the entire Nginx installation and file copy process on each new instance.",
+        "C": "You use AWS Marketplace AMIs that contain similar pre-installed software and then customize them later.",
+        "D": "You rely on Quick Start AMIs and run a user-data script every time to install Nginx."
+      },
+      "correctAnswer": "A",
+      "tag": "AMI Creation & Consistency",
+      "difficulty": "Hard  \r\nBrief Explation**: The notes explain My AMIs (custom AMIs) ensure identical instances. Manual repetition (B) or Marketplace (C) or Quick Start without customization (D) do not guarantee consistency."
+    },
+    {
+      "id": 10,
+      "text": "During an audit, you discover that an EC2 instance is using a community AMI downloaded from the AWS Marketplace. The instance handles production traffic. What risk-based decision should you make?",
+      "options": {
+        "A": "You immediately create a new instance from a trusted Quick Start or custom AMI, migrate the application, and terminate the community AMI instance to eliminate potential security risks from unverified third-party images.",
+        "B": "You continue using the community AMI because it was free and already running without issues.",
+        "C": "You simply update the security groups to restrict access instead of changing the AMI.",
+        "D": "You contact the community AMI owner for verification before taking any action."
+      },
+      "correctAnswer": "A",
+      "tag": "AMI Security Best Practices",
+      "difficulty": "Hard  \r\nBrief Explation**: Community AMIs carry security risks (notes warn to verify). Immediate migration to trusted AMI is the correct remediation."
+    },
+    {
+      "id": 11,
+      "text": "Your team needs to grant an EC2 instance temporary permission to upload files to a specific S3 bucket without embedding long-term credentials in the application code. How should you implement this securely?",
+      "options": {
+        "A": "You create an IAM role with the necessary S3 permissions (such as PutObject and ListBucket), attach the role to the EC2 instance, and configure the application to use the instance metadata service for temporary credentials.",
+        "B": "You create an IAM user with access keys and hard-code the keys inside the application running on the instance.",
+        "C": "You use S3 bucket policies to allow the instance’s public IP to upload files directly.",
+        "D": "You enable S3 public access and let the instance upload anonymously."
+      },
+      "correctAnswer": "A",
+      "tag": "IAM Roles for EC2-to-S3 Access",
+      "difficulty": "Hard  \r\nBrief Explation**: IAM roles + instance metadata is the secure, temporary credential method described in your IAM notes. Hard-coding keys (B) or public access (C/D) violate security best practices."
+    },
+    {
+      "id": 12,
+      "text": "A static website hosted on S3 is experiencing high latency for users in distant regions. The team wants to improve global performance without changing the origin bucket. What solution should you implement?",
+      "options": {
+        "A": "You create a CloudFront distribution with the S3 bucket as the origin, enable it, and update the website DNS to point to the CloudFront domain name so content is served from the nearest edge location.",
+        "B": "You copy the entire S3 bucket to multiple regions manually and use Route 53 latency-based routing.",
+        "C": "You enable S3 Transfer Acceleration on the bucket and update the website URLs accordingly.",
+        "D": "You rely on the default S3 regional endpoint because CloudFront adds unnecessary cost."
+      },
+      "correctAnswer": "A",
+      "tag": "CloudFront for Global Low-Latency Delivery",
+      "difficulty": "Extremely Hard  \r\nBrief Explation**: CloudFront is the CDN service in the notes that caches at edge locations to reduce latency. Manual multi-region copies or Transfer Acceleration are less efficient."
+    },
+    {
+      "id": 13,
+      "text": "You have enabled versioning on an S3 bucket containing critical documents. A user accidentally deletes an important file. How should you recover it while maintaining auditability?",
+      "options": {
+        "A": "You go to the S3 console, select the deleted object, view previous versions, and restore the latest non-delete-marker version by deleting the delete marker or copying the desired version.",
+        "B": "You contact AWS support to recover the file because versioning only tracks changes but does not allow recovery.",
+        "C": "You create a lifecycle rule to permanently delete old versions and then restore from backup.",
+        "D": "You disable versioning on the bucket to simplify future operations."
+      },
+      "correctAnswer": "A",
+      "tag": "S3 Versioning & Delete Marker Recovery",
+      "difficulty": "Extremely Hard  \r\nBrief Explation**: Versioning notes explain delete markers; restoring by removing the marker or copying the version is the exact recovery method."
+    },
+    {
+      "id": 14,
+      "text": "Your company wants to automatically move objects older than 90 days from S3 Standard to S3 Glacier Flexible Retrieval and permanently delete objects older than 365 days. What is the correct configuration?",
+      "options": {
+        "A": "You create an S3 Lifecycle rule that transitions current versions to Glacier Flexible Retrieval after 90 days and expires (deletes) current versions after 365 days while also permanently deleting noncurrent versions after the same period.",
+        "B": "You manually move objects using the AWS CLI every 90 days.",
+        "C": "You rely on S3 Intelligent-Tiering to handle all transitions automatically without any rules.",
+        "D": "You set a bucket policy that denies access to old objects instead of moving them."
+      },
+      "correctAnswer": "A",
+      "tag": "S3 Lifecycle Management",
+      "difficulty": "Extremely Hard  \r\nExplanation: Lifecycle rules in notes support transition to Glacier after 90 days and expiration after 365 days for both current and noncurrent versions."
+    },
+    {
+      "id": 15,
+      "text": "You are designing a multi-tier application with web servers in a public subnet and database servers in a private subnet. The database must be able to download security patches from the internet but should never be directly reachable from the internet. How should you configure outbound internet access?",
+      "options": {
+        "A": "You place a NAT Gateway in the public subnet, update the private subnet’s route table to send 0.0.0.0/0 traffic through the NAT Gateway, and ensure the database security group allows outbound traffic on required ports.",
+        "B": "You attach an Internet Gateway directly to the private subnet and open all inbound rules on the database security group.",
+        "C": "You use a VPC endpoint for S3 and manually copy patches instead of allowing internet access.",
+        "D": "You place the database in the public subnet with restricted security group rules."
+      },
+      "correctAnswer": "A",
+      "tag": "VPC – NAT Gateway for Private Subnet Outbound",
+      "difficulty": "Extremely Hard  \r\nExplanation: Notes describe NAT Gateway in public subnet + route table update as the standard way to allow private subnet internet access without inbound exposure."
+    },
+    {
+      "id": 16,
+      "text": "During a CloudWatch lab, you need to create an alarm that automatically stops an EC2 instance when CPU utilization exceeds 80% for 5 consecutive minutes. Which configuration achieves this?",
+      "options": {
+        "A": "You create a CloudWatch alarm on the CPUUtilization metric with a threshold of 80%, statistic Average, period 300 seconds, and set the EC2 action to “Stop this instance” when the alarm enters the ALARM state.",
+        "B": "You create a CloudWatch Logs subscription filter and use Lambda to stop the instance.",
+        "C": "You rely on AWS Compute Optimizer recommendations instead of an alarm.",
+        "D": "You configure the alarm on NetworkIn instead of CPUUtilization."
+      },
+      "correctAnswer": "A",
+      "tag": "CloudWatch Alarms + EC2 Actions",
+      "difficulty": "Extremely Hard  \r\nExplanation: CloudWatch alarm configuration in notes uses CPUUtilization metric with EC2 stop action on threshold breach."
+    },
+    {
+      "id": 17,
+      "text": "Your team wants to automatically scale the number of EC2 web servers from 2 to 10 based on CPU load while distributing traffic evenly. What combined service configuration should you use?",
+      "options": {
+        "A": "You create a launch template from a properly configured AMI, build an Auto Scaling Group with the template, set target tracking on CPUUtilization, and attach an Application Load Balancer to the Auto Scaling Group.",
+        "B": "You manually launch new instances when load increases and update the load balancer target group yourself.",
+        "C": "You use only an Elastic Load Balancer without Auto Scaling because scaling is not required.",
+        "D": "You rely on Spot Instances alone without a launch template or load balancer."
+      },
+      "correctAnswer": "A",
+      "tag": "ELB + Auto Scaling Group Integration",
+      "difficulty": "Extremely Hard  \r\nExplanation: Launch template + ASG with target tracking + ALB is the exact architecture described in the ELB/ASG notes."
+    },
+    {
+      "id": 18,
+      "text": "A developer needs to grant an EC2 instance permission to invoke a Lambda function and read from a DynamoDB table without using access keys. What is the secure approach?",
+      "options": {
+        "A": "You create an IAM role with Lambda:InvokeFunction and dynamodb:GetItem permissions, attach the role to the EC2 instance, and update the application to use the AWS SDK with the default credential provider chain.",
+        "B": "You create an IAM user with long-term access keys and store the keys in the instance’s environment variables.",
+        "C": "You use resource-based policies on Lambda and DynamoDB to allow the instance’s public IP.",
+        "D": "You enable S3 public access and store temporary credentials in an S3 bucket."
+      },
+      "correctAnswer": "A",
+      "tag": "IAM Roles for Cross-Service Access (Lambda + DynamoDB)",
+      "difficulty": "Extremely Hard  \r\nExplanation: IAM roles attached to EC2 provide temporary credentials for other AWS services without keys."
+    },
+    {
+      "id": 19,
+      "text": "Your RDS MySQL database is in a single Availability Zone and experiences occasional outages during maintenance. The team wants high availability with automatic failover. What should you enable?",
+      "options": {
+        "A": "You modify the RDS instance to enable Multi-AZ deployment so AWS automatically maintains a synchronous standby replica in another Availability Zone and performs failover if the primary fails.",
+        "B": "You manually create a read replica in another AZ and update the application connection string yourself during outages.",
+        "C": "You switch to DynamoDB because it is serverless and does not require high-availability configuration.",
+        "D": "You rely on daily snapshots and restore them when an outage occurs."
+      },
+      "correctAnswer": "A",
+      "tag": "RDS Multi-AZ High Availability",
+      "difficulty": "Extremely Hard  \r\nExplanation: Multi-AZ creates a synchronous standby with automatic failover, matching the notes on RDS high availability."
+    },
+    {
+      "id": 20,
+      "text": "You need to choose between RDS and DynamoDB for a mobile gaming leaderboard that requires single-digit millisecond latency, massive scale, and flexible schema for player scores and metadata. Which service is more appropriate?",
+      "options": {
+        "A": "You select Amazon DynamoDB because it is a fully managed NoSQL service that automatically scales, provides single-digit millisecond performance, and supports flexible schema without predefined tables.",
+        "B": "You choose Amazon RDS MySQL because it supports complex SQL joins needed for leaderboards.",
+        "C": "You use S3 with Lambda to store scores because it is cheaper.",
+        "D": "You recommend ElastiCache because it is designed for caching leaderboards."
+      },
+      "correctAnswer": "A",
+      "tag": "DynamoDB vs RDS for High-Scale Flexible Workloads",
+      "difficulty": "Extremely Hard  \r\nExplanation: DynamoDB notes highlight single-digit ms latency, automatic scaling, and flexible schema — perfect for the gaming leaderboard."
+    },
+    {
+      "id": 21,
+      "text": "An EC2 instance in a private subnet needs to download software updates from the internet, but the team does not want to expose the instance publicly. What is the minimal and secure solution?",
+      "options": {
+        "A": "You deploy a NAT Gateway in a public subnet, add a default route (0.0.0.0/0) pointing to the NAT Gateway in the private subnet’s route table, and ensure the instance’s security group allows outbound HTTPS traffic.",
+        "B": "You move the instance to a public subnet and restrict inbound rules to only your team’s IP addresses.",
+        "C": "You use a VPC endpoint for every internet service the instance needs.",
+        "D": "You enable Internet Gateway on the private subnet route table."
+      },
+      "correctAnswer": "A",
+      "tag": "VPC Private Subnet Outbound Internet Access",
+      "difficulty": "Extremely Hard  \r\nExplanation: NAT Gateway solution is explicitly covered in the VPC networking section of your notes."
+    },
+    {
+      "id": 22,
+      "text": "Your static website files are stored in an S3 bucket with versioning enabled. You want to serve the website globally with low latency and also protect it with HTTPS. What is the complete recommended setup?",
+      "options": {
+        "A": "You enable static website hosting on the S3 bucket, create a CloudFront distribution with the S3 bucket as origin (using the website endpoint), add an alternate domain name with ACM certificate for HTTPS, and update DNS to point to CloudFront.",
+        "B": "You use the direct S3 website endpoint without CloudFront because it already supports HTTPS.",
+        "C": "You host the website on EC2 with Nginx instead of S3 because S3 cannot serve static content securely.",
+        "D": "You rely on S3 public access and CloudFront without enabling static website hosting."
+      },
+      "correctAnswer": "A",
+      "tag": "S3 Static Hosting + CloudFront with HTTPS",
+      "difficulty": "Extremely Hard  \r\nExplanation: The notes describe the full workflow: static website hosting on S3 + CloudFront distribution + ACM certificate for HTTPS."
+    },
+    {
+      "id": 23,
+      "text": "A new hire accidentally uploaded sensitive files to a public S3 bucket. The team wants to prevent this from happening again across all accounts. What account-level setting should you enable?",
+      "options": {
+        "A": "You enable Block Public Access settings at the AWS account level (S3 Block Public Access) so that no bucket or object can ever be made publicly accessible regardless of bucket policies or ACLs.",
+        "B": "You create a custom IAM policy that denies s3:PutBucketAcl for all users.",
+        "C": "You rely on CloudTrail logging and manual review of bucket permissions.",
+        "D": "You use S3 Access Points for every bucket instead of changing account settings."
+      },
+      "correctAnswer": "A",
+      "tag": "S3 Account-Level Block Public Access",
+      "difficulty": "Extremely Hard  \r\nExplanation: Account-level Block Public Access is the recommended safety mechanism in the S3 security section."
+    },
+    {
+      "id": 24,
+      "text": "You are configuring an Auto Scaling Group with a desired capacity of 4 instances. During a sudden traffic spike, CPU utilization reaches 85%. The scaling policy is set to add 2 instances when CPU exceeds 70% for 2 minutes. After scaling, how many instances will be running?",
+      "options": {
+        "A": "The Auto Scaling Group will launch 2 additional instances, bringing the total to 6 running instances to handle the increased load.",
+        "B": "The group will remain at 4 instances because the desired capacity cannot be exceeded.",
+        "C": "The group will scale down immediately after the spike because the metric returns to normal.",
+        "D": "The group will replace existing instances instead of adding new ones."
+      },
+      "correctAnswer": "A",
+      "tag": "Auto Scaling Group Scaling Behavior",
+      "difficulty": "Extremely Hard  \r\nExplanation: ASG adds instances when the scaling policy is triggered; desired capacity is increased accordingly."
+    },
+    {
+      "id": 25,
+      "text": "Your team is debating whether to use an AMI or an EBS snapshot for disaster recovery of a production EC2 web server. The server contains both the OS and application data. Which is the correct choice for full instance recovery?",
+      "options": {
+        "A": "You create a full AMI from the running instance because an AMI captures the entire machine configuration including OS, software, and all attached EBS volumes, allowing you to launch an identical replacement instance instantly.",
+        "B": "You create only an EBS snapshot of the root volume because snapshots are sufficient to restore the entire server.",
+        "C": "You use a launch template without any AMI or snapshot.",
+        "D": "You rely on CloudWatch backups instead of AMI or snapshots."
+      },
+      "correctAnswer": "A",
+      "tag": "AMI vs EBS Snapshot for Full Instance Recovery",
+      "difficulty": "Extremely Hard  \r\nExplanation: AMI captures the entire machine (OS + volumes) while snapshot is only for one EBS volume."
+    },
+    {
+      "id": 26,
+      "text": "An application running on EC2 needs to send an email notification every time a new object is uploaded to an S3 bucket. The team wants an event-driven, serverless solution. What is the best architecture?",
+      "options": {
+        "A": "You configure an S3 event notification to trigger a Lambda function on ObjectCreated events, and the Lambda function publishes a message to SNS which sends the email notification.",
+        "B": "You run a cron job on the EC2 instance that polls the S3 bucket every minute.",
+        "C": "You use CloudWatch Events directly to send emails without Lambda.",
+        "D": "You rely on S3 server access logging and manual review."
+      },
+      "correctAnswer": "A",
+      "tag": "S3 Event Notification → Lambda → SNS",
+      "difficulty": "Extremely Hard  \r\nExplanation: The serverless event-driven pattern (S3 → Lambda → SNS) is the exact architecture shown in the Lambda/SNS notes."
+    },
+    {
+      "id": 27,
+      "text": "You need to securely copy a large folder of configuration files from your local Windows machine to an EC2 Linux instance using the .pem key. The folder contains subdirectories. What is the correct SCP command syntax for Windows PowerShell?",
+      "options": {
+        "A": "You run the command: scp -i INS-1-KEY.pem -r \"D:\\ProjectFolder\" ubuntu@<public-ip>:/home/ubuntu/ to recursively copy the entire folder and all its contents securely.",
+        "B": "You use the AWS CLI s3 cp command even though the files are on your local machine.",
+        "C": "You drag and drop the folder using the AWS Management Console file transfer.",
+        "D": "You run scp without the -r flag because subdirectories are not needed."
+      },
+      "correctAnswer": "A",
+      "tag": "SCP Command for Recursive Folder Copy",
+      "difficulty": "Hard  \r\nExplanation: The -r flag is required for directories; notes provide the exact Windows PowerShell SCP syntax."
+    },
+    {
+      "id": 28,
+      "text": "Your RDS database is experiencing high read traffic. The team wants to offload reads without affecting write performance. What should you implement?",
+      "options": {
+        "A": "You create one or more read replicas of the RDS instance and direct read-only queries from the application to the replica endpoints while writes continue to go to the primary.",
+        "B": "You increase the instance size of the primary RDS database vertically.",
+        "C": "You migrate the entire database to DynamoDB for automatic scaling.",
+        "D": "You enable Multi-AZ but keep all traffic on the primary."
+      },
+      "correctAnswer": "A",
+      "tag": "RDS Read Replicas for Read Scaling",
+      "difficulty": "Extremely Hard  \r\nExplanation: Read replicas offload read traffic while writes go to the primary, as described in RDS notes."
+    },
+    {
+      "id": 29,
+      "text": "A developer wants to launch an EC2 instance using a launch template that includes the correct AMI, instance type, key pair, and IAM role for S3 access. What benefit does using a launch template provide over manual configuration?",
+      "options": {
+        "A": "The launch template standardizes and version-controls all instance parameters so new instances (including those launched by Auto Scaling Groups) are always consistent and correctly configured.",
+        "B": "The launch template is only useful for single instances and cannot be used with Auto Scaling.",
+        "C": "Manual configuration is always preferred because launch templates add unnecessary complexity.",
+        "D": "Launch templates are required only when using Spot Instances."
+      },
+      "correctAnswer": "A",
+      "tag": "Launch Templates for Standardization",
+      "difficulty": "Extremely Hard  \r\nExplanation: Launch templates provide versioned, reusable configurations for both manual and Auto Scaling launches."
+    }
+  ],
+  "timeLimit": 3600,
+  "createdAt": "2026-04-05T15:35:20.862Z"
+}

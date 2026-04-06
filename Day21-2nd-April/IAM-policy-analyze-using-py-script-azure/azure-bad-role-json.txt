@@ -1,0 +1,16 @@
+{
+  "roleName": "Dangerous Over-Privileged Role",
+  "description": "A role that violates least privilege.",
+  "permissions": [
+    {
+      "actions": [
+        "*",
+        "Microsoft.Authorization/roleAssignments/write"
+      ],
+      "dataActions": [
+        "Microsoft.KeyVault/vaults/secrets/read",
+        "Microsoft.Storage/storageAccounts/delete"
+      ]
+    }
+  ]
+}

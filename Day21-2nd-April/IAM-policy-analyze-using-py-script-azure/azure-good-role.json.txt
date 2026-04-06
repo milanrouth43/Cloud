@@ -1,0 +1,12 @@
+{
+  "roleName": "Safe VM Reader",
+  "description": "A strictly scoped role for reading VM metrics.",
+  "permissions": [
+    {
+      "actions": [
+        "Microsoft.Compute/virtualMachines/read"
+      ],
+      "dataActions": []
+    }
+  ]
+}

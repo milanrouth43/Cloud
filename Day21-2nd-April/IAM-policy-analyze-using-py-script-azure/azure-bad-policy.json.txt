@@ -1,0 +1,11 @@
+{
+  "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#roleManagement/directory/roleAssignments",
+  "value": [
+    {
+      "directoryScopeId": "/",
+      "id": "lAPpYvVpN0KRkAEhdxReEFdBuOdv_9dNp6NxtY0I3z0-1",
+      "principalId": "e7b84157-ff6f-4dd7-a7a3-71b58d08df3d",
+      "roleDefinitionId": "62e90394-69f5-4237-9190-012177145e10"
+    }
+  ]
+}

@@ -1,0 +1,428 @@
+{
+  "id": "2f31a79f-9c8f-4009-9f57-f88490c2f612",
+  "title": "Azure",
+  "questions": [
+    {
+      "id": 1,
+      "text": "During your Azure Fundamentals hands-on lab, your team is deploying a customer-facing web application that must comply with strict data residency laws requiring all data to remain within India. The application needs low latency for users in Pune and Chennai while ensuring disaster recovery stays inside the same physical boundary if a major outage occurs. How should you choose the deployment location while applying Azure global infrastructure best practices?",
+      "options": {
+        "A": "You should deploy the application in the Central India region because it provides physically separate data centers within the geographic area aligned with India’s data residency requirements and supports disaster recovery within the same geography.",
+        "B": "You should deploy the application across multiple availability zones in the South India region because zones offer independent power and networking to protect against data center failure while still keeping data inside India.",
+        "C": "You should deploy the application using an availability set in the East US region because fault domains and update domains will protect against rack-level failures and planned maintenance without violating any residency rules.",
+        "D": "You should deploy the application at an edge location in the Asia Pacific geography because POPs and edge caching will reduce latency and automatically route traffic through the Microsoft Global Backbone for optimal performance."
+      },
+      "correctAnswer": "A",
+      "tag": "Azure Global Infrastructure – Geography & Region",
+      "difficulty": "Medium",
+      "explanation": "The correct choice is A because the notes state that a Geography is a large physical boundary aligned with data residency and compliance, and a Region is a set of data centers within that geography; Central India keeps data inside India while supporting disaster recovery within the geography. Option B confuses Availability Zones (for data-center failure inside one region) with geography-level residency. Option C uses an unrelated region and availability set. Option D misuses edge locations, which are for caching rather than primary deployment residency."
+    },
+    {
+      "id": 2,
+      "text": "In a practical demo session, your organization needs to host a development environment that must survive a complete data center outage in Central India without any downtime. The team has already decided on the Central India region for compliance reasons. How should you design the infrastructure to meet this availability requirement while following Azure architecture principles?",
+      "options": {
+        "A": "You should place the virtual machines across three availability zones in the Central India region because each zone has independent power, cooling, and networking so that if one data center fails the application continues running in the other zones.",
+        "B": "You should distribute the virtual machines across multiple fault domains inside a single availability set in the Central India region because this protects against rack and hardware failures during normal operations.",
+        "C": "You should deploy everything in a single data center within the Central India region and rely on the Microsoft Global Backbone for automatic failover because the backbone ensures low-latency traffic rerouting between regions.",
+        "D": "You should use update domains across two regions in the India geography because Azure never updates all domains at the same time, guaranteeing the application never fully goes down during maintenance."
+      },
+      "correctAnswer": "A",
+      "tag": "Availability Zones",
+      "difficulty": "Medium",
+      "explanation": "The correct choice is A because the notes explicitly state that Availability Zones are physically separate groups of data centers with independent power, cooling, and networking to protect from complete data center failure; placing VMs across zones in the same region meets the requirement. Option B only protects against rack failure (availability set). Option C relies on the backbone, which does not handle data-center outages. Option D confuses update domains with regional protection."
+    },
+    {
+      "id": 3,
+      "text": "Your team is building a multi-tier application and wants to ensure virtual machines are protected from both rack-level hardware failures and planned maintenance updates. You are working inside a single availability zone in the South India region. How should you configure the compute resources to achieve this protection while applying Azure availability best practices?",
+      "options": {
+        "A": "You should place the virtual machines in an availability set that automatically distributes them across multiple fault domains and update domains so that a single rack failure affects only one fault domain and Azure updates only one update domain at a time.",
+        "B": "You should spread the virtual machines across three availability zones inside the South India region because each zone has independent power and networking to survive complete data center outages.",
+        "C": "You should rely solely on managed disks attached to the virtual machines because Azure automatically re-replicates data if the underlying hardware fails, eliminating the need for any additional availability constructs.",
+        "D": "You should deploy the virtual machines with public IPs and use the Microsoft Global Backbone for traffic routing because the private network ensures predictable low-latency communication even during rack failures."
+      },
+      "correctAnswer": "A",
+      "tag": "Availability Set, Fault & Update Domains",
+      "difficulty": "Medium",
+      "explanation": "The correct choice is A because the notes describe Availability Sets as logical constructs that distribute VMs across fault domains (for rack/hardware failure) and update domains (Azure never updates all at once), exactly matching the rack and maintenance protection needs. Option B is for data-center protection (zones). Option C and D ignore the required constructs."
+    },
+    {
+      "id": 4,
+      "text": "During a cost-optimization exercise in your training lab, the team notices that user requests for static images and videos are traveling long distances over the public internet, causing high latency for global customers. The application origin is in the Central India region. How should you improve content delivery speed while applying Azure edge and networking principles?",
+      "options": {
+        "A": "You should configure Azure CDN to use edge locations that cache static assets closer to users so that requests are served from the nearest edge node instead of always traveling to the origin server through the backbone.",
+        "B": "You should place the application behind a point of presence in the India geography because POPs act as network entry gateways that optimize routing and peering before traffic enters the Microsoft Global Backbone.",
+        "C": "You should create a virtual network with multiple subnets and network security groups because proper segmentation will reduce latency for cached content delivery across regions.",
+        "D": "You should deploy the storage account in multiple regions simultaneously because multi-region replication will automatically serve content from the closest geography without needing edge caching."
+      },
+      "correctAnswer": "A",
+      "tag": "Edge Locations & POPs",
+      "difficulty": "Medium",
+      "explanation": "The correct choice is A because the notes state that Edge Locations cache and deliver content closer to users to reduce latency and origin server requests, while POPs are only routing entry points. Option B confuses POP function. Options C and D apply unrelated networking or multi-region concepts."
+    },
+    {
+      "id": 5,
+      "text": "Your company has just signed a new contract requiring strict separation of production and development workloads for compliance and billing purposes. The organization already has a single Azure tenant. How should you organize the cloud environment to maintain isolation while applying governance and resource management best practices?",
+      "options": {
+        "A": "You should create two separate subscriptions under the same tenant—one for production and one for development—because each subscription acts as its own billing and resource management boundary, containing impact within its own scope.",
+        "B": "You should place both production and development resources in the same subscription but inside different resource groups because resource groups provide logical containers that share a common lifecycle and simplify deletion operations.",
+        "C": "You should use a single management group to hold both production and development subscriptions because policies applied at the management group level automatically cascade to all child subscriptions for consistent governance.",
+        "D": "You should create separate Azure tenants for production and development because each tenant serves as the root identity boundary and ensures complete logical isolation of users, groups, and policies."
+      },
+      "correctAnswer": "A",
+      "tag": "Subscriptions & Resource Organization",
+      "difficulty": "Medium",
+      "explanation": "The correct choice is A because the notes state that a Subscription is a logical billing and resource management boundary that contains impact within itself; separate subscriptions achieve workload isolation for compliance and billing. Option B uses resource groups (lifecycle only). Option C is for policy cascading, not isolation. Option D overuses tenants."
+    },
+    {
+      "id": 6,
+      "text": "In your IAM practical session, the security team wants to grant a group of developers full control to manage virtual machines and storage accounts in the development resource group without allowing them to assign roles to other users or delete the entire subscription. How should you implement access control while following the principle of least privilege?",
+      "options": {
+        "A": "You should assign the Contributor role to the Developers group at the development resource group scope because Contributor allows full resource management but does not permit access delegation or changes at higher scopes.",
+        "B": "You should assign the Owner role to the Developers group at the subscription level because Owner provides complete control including the ability to manage all resources and delegate access across the entire subscription.",
+        "C": "You should assign the Reader role to the Developers group at the management group level because Reader provides view-only access and inheritance ensures consistent monitoring without modification rights.",
+        "D": "You should create a custom RBAC role that includes only virtual machine and storage permissions and assign it at the tenant root because this ensures the group can manage compute and storage everywhere without affecting billing."
+      },
+      "correctAnswer": "A",
+      "tag": "IAM / RBAC Roles & Least Privilege",
+      "difficulty": "Medium",
+      "explanation": "The correct choice is A because the notes describe Contributor as full resource management without access delegation, and scope at the resource group enforces least privilege exactly as required. Option B (Owner) and Option C (Reader) violate least privilege. Option D creates unnecessary custom roles at the wrong scope."
+    },
+    {
+      "id": 7,
+      "text": "During a governance review, an auditor needs read-only access to configuration settings across all resource groups in the production subscription but must never be able to modify any resources or access development environments. How should you configure the access while applying RBAC scope inheritance best practices?",
+      "options": {
+        "A": "You should assign the Reader role to the auditor at the production subscription scope because the role provides view-only access and automatically inherits to all child resource groups without granting modification rights.",
+        "B": "You should assign the Contributor role to the auditor at each individual resource group scope because this limits access to only the required resources while still allowing full management inside those groups.",
+        "C": "You should add the auditor to a group that has Owner permissions at the management group level because group membership automatically propagates permissions and simplifies ongoing maintenance.",
+        "D": "You should assign the Reader role directly on every individual resource inside the production subscription because explicit resource-level assignments override any inherited permissions for maximum granularity."
+      },
+      "correctAnswer": "A",
+      "tag": "RBAC Scope Inheritance",
+      "difficulty": "Medium",
+      "explanation": "The correct choice is A because the notes explain that assigning a role at the subscription scope automatically inherits to all child resource groups, providing view-only access without modification. Option B limits too narrowly. Option C uses the wrong scope and role. Option D is inefficient and error-prone."
+    },
+    {
+      "id": 8,
+      "text": "Your team is designing the identity structure for a new project and needs to ensure that employee sign-ins, multi-factor authentication, and conditional access policies are centrally managed for all Azure resources. How should you establish the foundational identity boundary while following Azure Entra ID principles?",
+      "options": {
+        "A": "You should create all users and groups inside the existing Microsoft Entra ID tenant because the tenant acts as the top-level identity container that handles authentication, authorization, and directory services for the entire organization.",
+        "B": "You should place each department in its own separate subscription and link them through management groups because subscriptions provide the primary identity boundary for role assignments and access control.",
+        "C": "You should configure resource groups as the identity boundary because they serve as logical containers where users and groups are directly associated with specific resources for simplified permission management.",
+        "D": "You should use availability zones to define identity boundaries because zones provide independent networking and ensure that authentication traffic remains isolated during data center failures."
+      },
+      "correctAnswer": "A",
+      "tag": "Azure Tenant & Entra ID",
+      "difficulty": "Medium",
+      "explanation": "The correct choice is A because the notes state that an Azure Tenant (Entra ID) is the top-level identity container handling authentication and directory services for the entire organization. Options B, C, and D confuse subscriptions, resource groups, or zones with identity boundaries."
+    },
+    {
+      "id": 9,
+      "text": "In a hands-on compute lab, you need to deploy a virtual machine for a medium-traffic web server that requires balanced performance, persistent storage for application data, and the ability to survive a single rack failure. The deployment is inside one availability zone. How should you configure the virtual machine to meet these requirements while applying core Azure compute best practices?",
+      "options": {
+        "A": "You should select a Standard SSD managed disk for the OS and data disks, place the virtual machine in an availability set with multiple fault domains, and choose an appropriate VM size with sufficient vCPU and RAM for the workload.",
+        "B": "You should use Premium SSD disks and deploy the virtual machine across three availability zones because zones protect against complete data center outages and provide higher durability than availability sets.",
+        "C": "You should rely on temporary disks for all application data and skip availability sets because the hypervisor layer automatically handles hardware failures and Azure manages all updates centrally.",
+        "D": "You should attach only an OS disk and use blob storage for application data because blob containers automatically scale and provide global accessibility without needing managed disks."
+      },
+      "correctAnswer": "A",
+      "tag": "Virtual Machine Configuration & Availability Set",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes describe VM size for compute capacity, managed disks for persistent storage, and availability sets with fault/update domains for rack and maintenance protection inside one zone. Option B uses zones (unneeded here). Option C ignores availability. Option D misuses blob storage."
+    },
+    {
+      "id": 10,
+      "text": "Your production database server requires high I/O performance and must retain data even if the virtual machine is stopped or redeployed. The team wants to minimize operational management of the underlying storage infrastructure. How should you configure storage for this virtual machine while following Azure managed disk principles?",
+      "options": {
+        "A": "You should attach Premium SSD managed disks for both the OS disk and data disks because managed disks are block-level volumes that Azure fully manages for durability, automatic replication, and high availability.",
+        "B": "You should use Standard HDD managed disks because they provide cost-efficient storage and Azure automatically re-replicates data if the physical hardware fails.",
+        "C": "You should store the database files in blob storage containers using the Cool tier because blob storage is optimized for unstructured data and automatically scales with traffic spikes.",
+        "D": "You should configure Azure File Storage with SMB protocol because file shares support multiple virtual machines accessing the same data simultaneously and provide built-in snapshots."
+      },
+      "correctAnswer": "A",
+      "tag": "Managed Disks",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes state that managed disks are block-level volumes fully managed by Azure for durability and automatic re-replication, retaining data when VMs are stopped. Option B chooses wrong disk type for high I/O. Option C confuses blob. Option D is for shared files."
+    },
+    {
+      "id": 11,
+      "text": "During a performance review, the team discovers that a development virtual machine is experiencing CPU throttling and memory saturation because it was sized too small for the current workload. How should you adjust the virtual machine configuration to restore performance while considering cost implications?",
+      "options": {
+        "A": "You should resize the virtual machine to a larger size that provides more vCPU, RAM, and network bandwidth because VM size directly determines compute capacity and directly influences performance and operational cost.",
+        "B": "You should add more managed data disks and distribute the workload across them because additional disks improve I/O operations and maintain stable performance during high transaction loads.",
+        "C": "You should move the virtual machine to a different availability zone because zones have independent networking that can reduce latency and improve overall throughput.",
+        "D": "You should switch the operating system image to a newer Linux distribution because updated images reduce vulnerability exposure and automatically include performance optimizations."
+      },
+      "correctAnswer": "A",
+      "tag": "VM Size & Performance",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes explicitly link VM size (vCPU, RAM, bandwidth) to performance and cost; resizing directly resolves throttling. Option B addresses I/O only. Option C is unrelated. Option D confuses OS image purpose."
+    },
+    {
+      "id": 12,
+      "text": "Your application requires shared file access from multiple virtual machines using standard SMB protocol, built-in backups, and hybrid connectivity to on-premises servers. The data must remain persistent even if a virtual machine fails. How should you implement this storage requirement while applying Azure file storage best practices?",
+      "options": {
+        "A": "You should create an Azure File Share inside a storage account and mount it to the virtual machines using SMB protocol because file storage is a fully managed shared file system that decouples data from compute infrastructure for persistent availability.",
+        "B": "You should use blob storage containers with Hot tier access because blob storage supports massive unstructured data and automatically scales to handle concurrent requests from multiple virtual machines.",
+        "C": "You should attach managed disks to each virtual machine individually because managed disks provide block-level storage that Azure automatically manages for durability and high availability.",
+        "D": "You should configure table storage with proper partition keys because table storage is a NoSQL service optimized for structured data and fast query performance across millions of records."
+      },
+      "correctAnswer": "A",
+      "tag": "Azure File Storage",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes describe Azure File Storage as a fully managed shared file system supporting SMB, decoupling data from compute for persistence, with built-in backups and hybrid integration. Options B, C, and D use wrong storage types."
+    },
+    {
+      "id": 13,
+      "text": "In a cost-sensitive development environment, the team stores large volumes of telemetry logs that are queried infrequently but must remain available for compliance audits. How should you choose the storage tier to optimize costs while ensuring the data can still be retrieved when needed?",
+      "options": {
+        "A": "You should place the log data in the Archive tier of blob storage because the Archive tier is designed for long-term retention and cost optimization while still allowing retrieval when required for audits.",
+        "B": "You should use the Hot tier of blob storage because the Hot tier is optimized for frequently accessed data and provides the lowest latency for real-time queries.",
+        "C": "You should store the logs in Azure Table Storage because table storage offers high scalability and fast query performance using partition and row keys for structured schema-less data.",
+        "D": "You should configure managed disks with Standard HDD because managed disks provide persistent block storage that Azure automatically replicates for durability."
+      },
+      "correctAnswer": "A",
+      "tag": "Blob Storage Access Tiers",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes state that the Archive tier is for long-term retention and cost optimization while still allowing retrieval for audits. Option B (Hot) is for frequent access. Option C is for structured NoSQL. Option D is block storage."
+    },
+    {
+      "id": 14,
+      "text": "Your team is migrating unstructured media files (images and videos) that need global accessibility, automatic scaling during traffic spikes, and secure HTTPS endpoints. The files are accessed frequently by end users worldwide. How should you store these assets while following Azure blob storage best practices?",
+      "options": {
+        "A": "You should upload the files to blob containers inside a storage account and use the Hot tier because blob storage is object storage optimized for unstructured data, durability, and global accessibility with automatic scaling.",
+        "B": "You should place the files in Azure File Storage using NFS protocol because file storage supports shared access across multiple systems and provides hybrid integration with on-premises environments.",
+        "C": "You should store the media in table storage entities because table storage is a NoSQL service that enables efficient indexing and rapid data retrieval using partition keys.",
+        "D": "You should attach the files as data disks on virtual machines because managed disks are block-level volumes that Azure fully manages for high-performance workloads."
+      },
+      "correctAnswer": "A",
+      "tag": "Blob Storage",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes describe blob storage as object storage for unstructured data, scalable, durable, global, with Hot tier for frequent access. Options B, C, and D use incorrect services."
+    },
+    {
+      "id": 15,
+      "text": "In a networking practical demo, you need to deploy a multi-tier web application where frontend servers must accept public traffic, application servers process internal logic, and database servers must never be directly accessible from the internet. All resources must remain isolated. How should you design the network architecture while applying Azure virtual network best practices?",
+      "options": {
+        "A": "You should create a single virtual network with three separate subnets—one for frontend, one for application, and one for database—then apply network security groups to restrict database subnet traffic from the internet while allowing internal communication.",
+        "B": "You should deploy each tier in its own availability zone because zones provide independent networking that automatically isolates traffic between frontend, application, and database layers.",
+        "C": "You should rely on public IP addresses for every virtual machine and use route tables to control next-hop behavior because public IPs ensure direct accessibility for all tiers.",
+        "D": "You should create separate virtual networks for each tier and connect them using the Microsoft Global Backbone because multiple VNets provide complete logical isolation across the entire infrastructure."
+      },
+      "correctAnswer": "A",
+      "tag": "Virtual Network & Subnet Segmentation",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes state that a VNet with subnets allows logical segmentation by function and NSGs restrict traffic (e.g., database from internet). Option B confuses zones. Option C exposes everything publicly. Option D over-separates networks."
+    },
+    {
+      "id": 16,
+      "text": "Your security team requires that inbound traffic to the web servers is filtered to allow only HTTP and HTTPS ports while blocking all other traffic at the subnet level. The virtual machines are already placed in a virtual network. How should you enforce this traffic control while following Azure networking security principles?",
+      "options": {
+        "A": "You should create a network security group with allow rules for ports 80 and 443 and associate the NSG at the subnet level because NSGs control inbound and outbound traffic using rule-based filtering at subnet or NIC level.",
+        "B": "You should configure route tables with custom next-hop entries pointing to a firewall because route tables define how traffic is directed within the virtual network and toward external endpoints.",
+        "C": "You should assign public IPs only to frontend virtual machines and rely on the hypervisor layer for automatic traffic filtering because the hypervisor ensures secure internal communication.",
+        "D": "You should use availability sets to distribute network interfaces because availability sets protect against hardware failures and automatically handle traffic distribution."
+      },
+      "correctAnswer": "A",
+      "tag": "Network Security Groups",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes describe NSGs as rule-based filtering at subnet/NIC level to allow only specific ports. Option B confuses route tables. Option C ignores security. Option D misuses availability sets."
+    },
+    {
+      "id": 17,
+      "text": "During an incident response exercise, traffic from an application server to a database server in the same virtual network is being dropped unexpectedly. The team has confirmed that the virtual machines are healthy. How should you diagnose and fix the routing issue while applying Azure route table best practices?",
+      "options": {
+        "A": "You should review and correct the route table associated with the subnet so that the next hop for internal traffic is set to Virtual Network instead of Internet or a firewall, ensuring proper traffic direction between resources.",
+        "B": "You should add a new network security group rule at the NIC level to explicitly allow traffic on the database port because NSGs perform rule-based filtering before traffic reaches the target resource.",
+        "C": "You should move the database virtual machine to a different availability zone because zones have independent networking that prevents traffic drops during data center events.",
+        "D": "You should enable public IP addresses on both servers because public IPs allow direct external routing that bypasses any internal virtual network restrictions."
+      },
+      "correctAnswer": "A",
+      "tag": "Route Tables & Traffic Control",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes state that route tables define next-hop direction for internal traffic; correcting the table fixes dropped traffic. Option B is NSG-related. Option C is unrelated. Option D exposes resources publicly."
+    },
+    {
+      "id": 18,
+      "text": "Your organization needs to deploy a complete multi-tier environment (virtual network, subnets, virtual machines, storage accounts, and security groups) repeatedly for development, testing, and production without manual configuration errors. How should you automate the provisioning while following Azure Resource Manager principles?",
+      "options": {
+        "A": "You should use an ARM template that declaratively defines all resources and relationships so that Azure Resource Manager can consistently provision the entire infrastructure as code in a coordinated manner across environments.",
+        "B": "You should manually create each resource through the Azure Portal because the portal provides a graphical interface that ensures every setting is correctly configured before deployment.",
+        "C": "You should rely on availability zones and fault domains to automatically handle resource provisioning because these constructs ensure high availability and automatic replication during deployment.",
+        "D": "You should create separate subscriptions for each environment and use management groups to apply policies because subscriptions act as the primary boundary for automated resource deployment."
+      },
+      "correctAnswer": "A",
+      "tag": "Azure Resource Manager (ARM)",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes describe ARM as the centralized framework using declarative templates for consistent, repeatable, automated deployment without manual errors. Options B, C, and D use manual or wrong approaches."
+    },
+    {
+      "id": 19,
+      "text": "The finance team has noticed unexpected charges from idle development virtual machines that run 24/7 and unattached managed disks left over from previous tests. How should you address this while applying Azure pricing and cost management best practices?",
+      "options": {
+        "A": "You should implement auto-shutdown policies on development virtual machines, delete unattached managed disks, and regularly review the cost analysis dashboard because Azure uses a consumption-based model where you pay only for actual metered usage of compute, storage, and bandwidth.",
+        "B": "You should move all development resources to the Archive tier of blob storage because lower tiers automatically reduce costs for infrequently used resources and data.",
+        "C": "You should assign Owner roles at the subscription level to the finance team because Owner permissions allow them to delete resources directly and control billing at the highest scope.",
+        "D": "You should deploy everything in a single availability set because availability sets reduce hardware failure costs and automatically optimize resource utilization across fault domains."
+      },
+      "correctAnswer": "A",
+      "tag": "Azure Pricing & Cost Management",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes emphasize the consumption-based model and cost management workflow (monitoring, budgets, optimization actions) to eliminate charges from idle resources. Options B, C, and D misapply storage tiers, roles, or availability."
+    },
+    {
+      "id": 20,
+      "text": "A production web application must achieve at least 99.95% uptime even if a single data center experiences a power outage. The current deployment uses a single virtual machine instance. How should you redesign the architecture to meet this SLA target while applying Azure availability and redundancy principles?",
+      "options": {
+        "A": "You should deploy multiple virtual machine instances across two or more availability zones behind a load balancer because availability zones protect against complete data center failures and load balancing distributes traffic to maintain service continuity.",
+        "B": "You should place all virtual machines in a single availability set with multiple update domains because Azure never updates all domains at the same time and this guarantees the application never fully goes down.",
+        "C": "You should rely on the Microsoft Global Backbone and POPs for traffic routing because the private network ensures low-latency failover during regional outages.",
+        "D": "You should use managed disks in the Cool tier and enable automatic scaling because storage tiers and scaling automatically adjust resources to meet SLA requirements without additional infrastructure."
+      },
+      "correctAnswer": "A",
+      "tag": "SLA Design & Availability Zones",
+      "difficulty": "Hard",
+      "explanation": "The correct choice is A because the notes state that availability zones protect against data-center failures and load balancers with multiple instances raise SLA; single-instance is lower. Option B only handles maintenance. Option C and D are unrelated."
+    },
+    {
+      "id": 21,
+      "text": "Your team is planning the full lifecycle of a new customer portal application from initial architecture design through eventual decommissioning. How should you manage the resources to maintain performance, cost efficiency, and SLA compliance throughout the entire lifecycle?",
+      "options": {
+        "A": "You should follow the service lifecycle stages by planning the architecture, deploying with ARM templates, continuously monitoring with diagnostics, scaling based on demand, applying updates, and performing resource cleanup during decommissioning.",
+        "B": "You should deploy all resources once and never modify them because Azure guarantees automatic scaling and patching through the hypervisor layer and managed services.",
+        "C": "You should place the entire application in a single resource group and rely on deletion of the group when the project ends because resource groups share a common lifecycle and delete all associated resources together.",
+        "D": "You should use only availability zones for every resource because zones automatically handle monitoring, failover, and decommissioning without any manual lifecycle management."
+      },
+      "correctAnswer": "A",
+      "tag": "Service Lifecycle",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes detail the full service lifecycle (planning, deployment, monitoring, scaling, updates, decommissioning) to maintain performance, cost, and SLA. Options B, C, and D ignore continuous management."
+    },
+    {
+      "id": 22,
+      "text": "During a major incident, the operations team needs to quickly grant temporary elevated permissions to troubleshoot a networking issue in the production subscription without permanently increasing risk or affecting other environments. How should you handle the access request while applying IAM and governance best practices?",
+      "options": {
+        "A": "You should create a temporary security group, assign the necessary Contributor role at the production resource group scope only, and remove the group membership after the incident because RBAC scopes and group-based assignments enforce least privilege and easy revocation.",
+        "B": "You should assign the Owner role at the tenant level to the troubleshooting team because the tenant is the root identity boundary and Owner permissions cascade everywhere for complete control during emergencies.",
+        "C": "You should add the team members directly as users in the management group and rely on policy inheritance because management groups automatically apply access rules across all child subscriptions.",
+        "D": "You should use availability sets to isolate the troubleshooting session because availability constructs logically separate resources and prevent impact on production during incident response."
+      },
+      "correctAnswer": "A",
+      "tag": "IAM Temporary Access & Least Privilege",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes stress RBAC scopes, groups, and least privilege; temporary group assignment at the exact resource group scope allows quick revocation without permanent risk. Options B, C, and D violate scope or use wrong constructs."
+    },
+    {
+      "id": 23,
+      "text": "The compliance team requires that all new resources automatically inherit security policies and cost controls without configuring each subscription individually. The organization has multiple subscriptions under one tenant. How should you implement this centralized governance while following Azure management group principles?",
+      "options": {
+        "A": "You should place all subscriptions under a single management group and apply policies at the management group level because policies automatically cascade to all child subscriptions and resources, ensuring consistent governance and reducing configuration drift.",
+        "B": "You should create separate resource groups in each subscription and apply policies at the resource group level because resource groups serve as logical containers for related resources and simplify policy enforcement.",
+        "C": "You should rely on Azure Resource Manager templates for every deployment because ARM ensures consistent provisioning and automatically includes governance rules in the template definition.",
+        "D": "You should use network security groups across all virtual networks because NSGs provide traffic filtering that enforces compliance rules at the networking layer for every resource."
+      },
+      "correctAnswer": "A",
+      "tag": "Management Groups & Policy Inheritance",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes state that policies at the management group level automatically cascade to all child subscriptions and resources, reducing drift. Options B, C, and D apply policies at too low a level or wrong layer."
+    },
+    {
+      "id": 24,
+      "text": "Your application experiences sudden traffic spikes during peak hours, causing increased data transfer costs and potential SLA violations due to latency. The origin servers are in a single region. How should you optimize both performance and cost while applying Azure edge, backbone, and pricing principles?",
+      "options": {
+        "A": "You should enable Azure CDN with edge locations to cache static content closer to users and reduce repeated origin requests through the Microsoft Global Backbone because edge caching lowers latency and consumption-based data transfer charges.",
+        "B": "You should increase the VM size and add more managed disks because larger compute capacity and additional storage automatically handle spikes and improve overall SLA without changing networking.",
+        "C": "You should create multiple subscriptions and distribute resources across them because separate billing boundaries automatically optimize cost allocation during traffic spikes.",
+        "D": "You should configure route tables with custom next hops pointing to the nearest POP because POPs act as network entry gateways that optimize routing and reduce backbone usage costs."
+      },
+      "correctAnswer": "A",
+      "tag": "Edge Locations, Backbone & Cost Optimization",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes describe edge locations for caching to reduce origin requests and backbone usage, directly lowering consumption-based data transfer costs and latency. Options B, C, and D misapply compute, subscriptions, or routing."
+    },
+    {
+      "id": 25,
+      "text": "In a complex enterprise setup, the team must ensure that a breach in one department’s development environment cannot affect production workloads or shared identity services. How should you architect the environment to achieve this isolation while applying tenant, subscription, and multi-tenant principles?",
+      "options": {
+        "A": "You should maintain a single tenant for identity but use separate subscriptions for development and production because each subscription acts as a logical billing and resource management boundary that contains impact and prevents cascading failures.",
+        "B": "You should deploy separate Azure tenants for each department because each tenant is the root identity boundary and provides complete isolation of users, groups, and policies across the entire organization.",
+        "C": "You should place everything in a single resource group with network security groups because resource groups share a common lifecycle and NSGs enforce zero-trust traffic boundaries at the subnet level.",
+        "D": "You should rely on availability zones and fault domains because these physical constructs automatically isolate hardware failures and prevent any cross-environment impact."
+      },
+      "correctAnswer": "A",
+      "tag": "Tenant vs Subscription Isolation",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes state that the tenant is the identity boundary while subscriptions are billing/resource boundaries that contain impact; this achieves required isolation without over-separating identity. Options B, C, and D confuse boundaries."
+    },
+    {
+      "id": 26,
+      "text": "The architecture team wants to ensure that future infrastructure changes are repeatable, version-controlled, and free of manual errors when deploying identical environments for different business units. How should you approach the deployment strategy while following Azure Resource Manager capabilities?",
+      "options": {
+        "A": "You should define the entire environment in declarative ARM templates and store them in version control so that Azure Resource Manager can consistently provision resources, enforce governance, and eliminate configuration drift across business units.",
+        "B": "You should use the Azure Portal for every deployment because the portal provides real-time validation and ensures all settings are correctly configured before resources are created.",
+        "C": "You should create a new management group for each business unit and apply custom policies because management groups automatically cascade rules to child subscriptions without needing templates.",
+        "D": "You should rely on availability sets and update domains because these constructs automatically handle deployment consistency and maintenance without any additional automation tools."
+      },
+      "correctAnswer": "A",
+      "tag": "ARM Templates & Governance",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes describe ARM as enabling declarative, version-controlled, consistent infrastructure-as-code deployment with built-in governance. Options B, C, and D are manual or incomplete."
+    },
+    {
+      "id": 27,
+      "text": "During a quarterly cost review, leadership asks how the organization can predict and control monthly spending on compute and storage while still allowing teams to scale resources based on demand. How should you implement financial governance while applying Azure pricing best practices?",
+      "options": {
+        "A": "You should configure budgets and alerts in the cost management dashboard, apply resource tagging, and regularly analyze usage reports because the consumption-based model charges only for actual metered usage and proactive monitoring prevents unexpected bills.",
+        "B": "You should move all workloads to the Archive tier of every storage service because lower tiers automatically reduce costs and Azure handles all scaling internally.",
+        "C": "You should assign Reader roles to the finance team at the tenant level because Reader access allows monitoring of all resources without granting modification rights that could increase spending.",
+        "D": "You should deploy every resource in availability zones because zones provide built-in redundancy that automatically optimizes costs through higher SLA credits."
+      },
+      "correctAnswer": "A",
+      "tag": "Cost Management Workflow",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes detail the cost management workflow (usage monitoring, budgets, tagging, optimization) to predict and control spending under the consumption model. Options B, C, and D misapply tiers, roles, or zones."
+    },
+    {
+      "id": 28,
+      "text": "A critical application must survive both a complete regional outage and a single data center failure while maintaining the highest possible SLA. The current design uses only availability sets in one region. How should you redesign the solution to achieve maximum resilience while following Azure SLA design considerations?",
+      "options": {
+        "A": "You should deploy multiple instances across availability zones in the primary region and add a secondary region with geo-redundant storage and traffic manager because multi-zone protects against data center failures and multi-region protects against regional outages.",
+        "B": "You should increase the number of update domains in the existing availability set because Azure never updates all domains simultaneously and this guarantees the application never fully goes down during planned maintenance.",
+        "C": "You should rely on the Microsoft Global Backbone and edge locations because the private network and POPs automatically reroute traffic during any outage without changing the deployment architecture.",
+        "D": "You should use only managed disks with Premium SSD because high-performance disks automatically provide durability and Azure handles all replication internally for SLA compliance."
+      },
+      "correctAnswer": "A",
+      "tag": "Multi-Region & Multi-Zone SLA Design",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes list SLA considerations: availability zones for data-center protection and multi-region for regional outages, combined with load balancing and geo-redundancy. Options B, C, and D address only partial aspects."
+    },
+    {
+      "id": 29,
+      "text": "Your organization needs to verify that all deployed resources are correctly organized, monitored, and compliant before a major audit. The environment spans multiple subscriptions and resource groups. How should you perform this validation while applying Azure governance, monitoring, and diagnostics fundamentals?",
+      "options": {
+        "A": "You should use Azure Monitor and diagnostics settings at the subscription and resource group levels combined with policy compliance reports from the management group to verify organization, health, and adherence to governance rules across the entire hierarchy.",
+        "B": "You should manually check each virtual machine and storage account because individual resource-level monitoring provides the most accurate diagnostics without relying on higher-level tools.",
+        "C": "You should rely on network security groups and route tables because proper networking configuration automatically enforces monitoring and compliance for all resources.",
+        "D": "You should delete and recreate every resource group because resource groups share a common lifecycle and recreating them ensures all configurations are reset to compliant defaults."
+      },
+      "correctAnswer": "A",
+      "tag": "Monitoring, Diagnostics & Governance",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes integrate Azure Monitor, diagnostics, and management group policy compliance for holistic validation across the hierarchy. Options B, C, and D are incomplete or use wrong tools."
+    },
+    {
+      "id": 30,
+      "text": "In a final hands-on assessment, the team must demonstrate understanding of the complete Azure hierarchy by explaining how identity, billing, logical grouping, and resource deployment interact when scaling from a small proof-of-concept to enterprise production. How should you describe the relationships while applying the full Azure organizational structure?",
+      "options": {
+        "A": "You should explain that the tenant is the top-level identity boundary, management groups provide centralized governance across subscriptions, each subscription acts as a billing and resource management boundary, and resource groups serve as logical containers for related resources that share a common lifecycle.",
+        "B": "You should state that availability zones and fault domains form the primary hierarchy because they provide physical isolation and automatic failover for all resources regardless of tenant or subscription structure.",
+        "C": "You should focus on virtual networks and subnets as the core organizational layer because proper network segmentation determines how all other resources are grouped and governed.",
+        "D": "You should emphasize ARM templates and pricing models because templates handle deployment and consumption-based billing automatically controls costs without needing a formal hierarchy."
+      },
+      "correctAnswer": "A",
+      "tag": "Full Azure Organizational Hierarchy",
+      "difficulty": "Extremely Hard",
+      "explanation": "The correct choice is A because the notes provide the exact conceptual comparison: tenant (identity), management group (centralized governance), subscription (billing), resource group (logical container). Options B, C, and D focus on physical or networking layers only."
+    }
+  ],
+  "timeLimit": 3600,
+  "createdAt": "2026-04-05T15:46:24.689Z"
+}

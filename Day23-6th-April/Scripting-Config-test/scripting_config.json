@@ -1,0 +1,428 @@
+{
+  "id": "74eb7f9a-fec5-4cdb-a48a-774b1e1b23e7",
+  "title": "scripting",
+  "questions": [
+    {
+      "id": 1,
+      "text": "During your Capgemini M1 training hands-on lab on a Linux EC2 instance, you create a temporary environment variable with `export TEAM_NAME=\"DevOpsBatch2026\"` and verify it using `echo $TEAM_NAME`. After closing the terminal and opening a new session, the variable is no longer available.  \r\n\r\nHow should you handle this situation while applying environment variable management principles in Bash scripting?",
+      "options": {
+        "A": "You should add the line `export TEAM_NAME=\"DevOpsBatch2026\"` inside `~/.bashrc`, save the file, run `source ~/.bashrc` to reload it, and then verify persistence with `echo $TEAM_NAME` in the new terminal so the variable becomes available across future sessions.",
+        "B": "You should simply run `export TEAM_NAME=\"DevOpsBatch2026\"` again in every new terminal, because environment variables created with export are designed to be session-specific and should never be made permanent.",
+        "C": "You should edit `~/.profile` instead of `~/.bashrc` and avoid using `source`, since .profile automatically loads all environment variables without any additional commands.",
+        "D": "You should use `unset TEAM_NAME` followed by re-exporting it, because this combination ensures the variable persists even after terminal restarts without editing any configuration files."
+      },
+      "correctAnswer": "A",
+      "tag": "Environment Variables Persistence",
+      "difficulty": "Medium",
+      "explanation": "Environment variables created with export exist only in the current session. To make them permanent and available after closing/reopening the terminal, they must be added to ~/.bashrc (for interactive shells) and the file reloaded with `source ~/.bashrc`. Option A correctly follows the hands-on example in your notes. Other options either fail to persist the variable or use incorrect files/commands."
+    },
+    {
+      "id": 2,
+      "text": "You are writing a reusable server health monitoring script that should display the hostname, system uptime, disk usage in human-readable format, memory usage in megabytes, and CPU load average. You create the file health_report.sh containing the relevant commands.  \r\n\r\nHow should you handle this situation while applying Bash scripting fundamentals and execution best practices?",
+      "options": {
+        "A": "You should begin the file with the shebang line `#!/bin/bash`, save it, make it executable using `chmod +x health_report.sh`, and then run it with `./health_report.sh` so the operating system uses the correct Bash interpreter with proper permissions.",
+        "B": "You should execute all the commands directly in the terminal one by one without creating any script file or shebang, because health checks are one-time operations that do not benefit from automation.",
+        "C": "You should use `#!/bin/sh` as the shebang and run the script with `bash health_report.sh` without changing permissions, since sh is sufficient for simple echo and system commands.",
+        "D": "You should omit the shebang entirely and execute the file using `source health_report.sh`, because sourcing loads the commands directly into the current shell without needing execute permissions."
+      },
+      "correctAnswer": "A",
+      "tag": "Shebang and Executable Scripts",
+      "difficulty": "Medium",
+      "explanation": "The shebang `#!/bin/bash` tells the OS to use Bash. The file must be made executable with `chmod +x` and run with `./script.sh` for proper execution, exactly as shown in your syscheck.sh and other examples. Other options bypass best practices for script execution."
+    },
+    {
+      "id": 3,
+      "text": "In your automation lab, you have set `export MY_NAME=\"Akshiv\"` in the current terminal session and tested it successfully. You now want to completely remove this variable from the current session's memory without impacting any configuration files.  \r\n\r\nHow should you handle this situation while applying proper environment variable lifecycle management?",
+      "options": {
+        "A": "You should execute `unset MY_NAME` and immediately verify with `echo $MY_NAME` to confirm it returns nothing, ensuring the variable is removed only from the active shell session.",
+        "B": "You should delete the corresponding line from `~/.bashrc` and run `source ~/.bashrc`, because unset only affects temporary variables while permanent ones require file modification.",
+        "C": "You should overwrite it by running `export MY_NAME=\"\"`, as setting an empty value is the recommended method to clear variables instead of using unset.",
+        "D": "You should simply close and reopen the terminal, since all exported variables automatically disappear when the session ends and no explicit removal command is required."
+      },
+      "correctAnswer": "A",
+      "tag": "Unset Environment Variable",
+      "difficulty": "Medium",
+      "explanation": "`unset` removes a variable from the current session only, matching the \"DELETE\" section in your notes. Verification with echo confirms removal. Other options either affect persistent files unnecessarily or fail to remove the variable properly."
+    },
+    {
+      "id": 4,
+      "text": "You need to implement a disk usage alert script for the root filesystem that calculates the usage percentage using df, awk, and sed, then prints a warning message only if usage exceeds 80 percent.  \r\n\r\nHow should you handle this situation while applying conditional statements and command substitution in Bash scripting?",
+      "options": {
+        "A": "You should store the numeric percentage in a variable named USAGE and use `if [ $USAGE -gt 80 ]; then echo \"Warning: Disk usage is above 80%\"; else echo \"Disk usage is normal\"; fi` to perform accurate numeric comparison and conditional alerting.",
+        "B": "You should always print the warning message regardless of the calculated value, because proactive alerts are safer than relying on thresholds in production monitoring scripts.",
+        "C": "You should keep the % symbol and use string comparison with `if [ \"$USAGE\" = \"80%\" ]`, since the raw df output includes the percentage sign.",
+        "D": "You should place the entire check inside an infinite loop without any if condition, depending entirely on cron scheduling to manage the alerting logic externally."
+      },
+      "correctAnswer": "A",
+      "tag": "Disk Usage Alert Script",
+      "difficulty": "Hard",
+      "explanation": "Your notes show extracting numeric USAGE with awk/sed and using numeric comparison `-gt`. Option A implements the exact conditional logic from the disk usage alert example. Other options misuse comparison types or remove the threshold entirely."
+    },
+    {
+      "id": 5,
+      "text": "Your team wants to automate cleanup of application logs in /var/log/myapp by removing files older than 7 days to prevent disk space exhaustion on production servers.  \r\n\r\nHow should you handle this situation while applying log management and find command best practices from your DevOps scripting examples?",
+      "options": {
+        "A": "You should use `find $LOG_DIR -type f -mtime +7 -delete` followed by a success echo message, because this precisely targets regular files modified more than 7 days ago without affecting directories.",
+        "B": "You should run `rm -rf /var/log/myapp/*` unconditionally, as completely clearing the log directory is faster and more effective for ongoing log maintenance.",
+        "C": "You should move files older than 7 days to a backup folder instead of deleting them, since the -delete option in find is considered too destructive for automation.",
+        "D": "You should change the filter to -mtime +30 to be more conservative, because deleting logs after only 7 days risks removing recent debug information needed during incidents."
+      },
+      "correctAnswer": "A",
+      "tag": "Log Cleanup Script",
+      "difficulty": "Hard",
+      "explanation": "The find command with `-type f -mtime +7 -delete` precisely matches the log cleanup example in your notes for safe, automated removal of old files. Other options are either too broad, too conservative, or avoid deletion."
+    },
+    {
+      "id": 6,
+      "text": "You are developing an automatic backup script that archives the web application directory /var/www/html into a dated, compressed tar.gz file stored in a dedicated backup location.  \r\n\r\nHow should you handle this situation while applying command substitution, date formatting, and tar options in Bash?",
+      "options": {
+        "A": "You should define SOURCE and BACKUP variables, capture today's date with `DATE=$(date +%F)`, and execute `tar -czf $BACKUP/site-backup-$DATE.tar.gz $SOURCE` to create a properly named gzip-compressed archive.",
+        "B": "You should use `tar -cvf` without the z option or dynamic date, because adding compression and command substitution makes the script overly complex for routine daily backups.",
+        "C": "You should implement the backup logic inside a Python script using subprocess calls, since Python boto3 patterns demonstrate that external commands are best handled through Python for all automation.",
+        "D": "You should hardcode a static filename without using $(date), because command substitution can introduce timing or permission issues when the script runs via cron jobs."
+      },
+      "correctAnswer": "A",
+      "tag": "Automatic Backup Script",
+      "difficulty": "Hard",
+      "explanation": "Using `$(date +%F)` for dynamic naming and `tar -czf` for gzip compression follows the backup script example exactly. Other options remove key features like compression or date handling."
+    },
+    {
+      "id": 7,
+      "text": "As part of your CI/CD automation practice, you need a deployment script that navigates to the application directory, pulls the latest code from the main branch, and restarts the nginx web server.  \r\n\r\nHow should you handle this situation while applying deployment scripting and service management principles?",
+      "options": {
+        "A": "You should change directory to APP_DIR, run `git pull origin main`, handle any dependencies, and then execute `sudo systemctl restart nginx` while checking the exit code with $? for success verification.",
+        "B": "You should skip the git pull step entirely and only restart nginx, because code updates in production should always be performed manually to prevent unintended changes.",
+        "C": "You should use `systemctl reload nginx` instead of restart and avoid any Git commands, since deployment scripts must remain independent of version control systems.",
+        "D": "You should execute all service commands without sudo by assuming the script always runs as root through Jenkins or cron, eliminating the need for privilege escalation."
+      },
+      "correctAnswer": "A",
+      "tag": "Application Deployment Script",
+      "difficulty": "Hard",
+      "explanation": "The sequence cd → git pull → systemctl restart matches your deployment script notes, with optional $? checking for robustness. Other options skip critical steps or misuse reload vs restart."
+    },
+    {
+      "id": 8,
+      "text": "You have created a basic auto-healing script that checks the status of the nginx service using systemctl and restarts it automatically if it is not active.  \r\n\r\nHow should you handle this situation while applying conditional logic, systemctl commands, and self-healing concepts in Bash scripting?",
+      "options": {
+        "A": "You should capture the status with `STATUS=$(systemctl is-active $SERVICE)` and use `if [ \"$STATUS\" != \"active\" ]; then systemctl restart $SERVICE; echo \"Service restarted\"; else echo \"Service running normally\"; fi` to restart only when necessary.",
+        "B": "You should run `systemctl restart nginx` every time the script executes, because regular restarts keep services in a fresh state regardless of their current condition.",
+        "C": "You should replace systemctl checks with `docker ps | grep nginx` even for non-containerized services, since Docker health check patterns are preferred for all monitoring in your notes.",
+        "D": "You should check the process with `ps aux | grep nginx` and ignore systemctl entirely, because direct process inspection is more reliable than systemd status commands in automation scripts."
+      },
+      "correctAnswer": "A",
+      "tag": "Service Restart / Auto-Healing",
+      "difficulty": "Hard",
+      "explanation": "Capturing status with `systemctl is-active` and conditional restart implements the exact auto-healing and service restart examples. Other options remove the condition or use inappropriate tools."
+    },
+    {
+      "id": 9,
+      "text": "In your Python for Cloud Automation project, you are writing a script to create an S3 bucket in a non-default region such as us-east-2 using boto3, ensuring the bucket is created successfully without location errors.  \r\n\r\nHow should you handle this situation while applying boto3 client usage and region-specific configuration?",
+      "options": {
+        "A": "You should initialize the s3 client with the target region and include `CreateBucketConfiguration={'LocationConstraint': region}` in the create_bucket call when the region is not us-east-1.",
+        "B": "You should omit the CreateBucketConfiguration parameter completely, because boto3 automatically inherits the correct region from the AWS CLI configuration for every bucket creation.",
+        "C": "You should use the ec2 resource object instead of an s3 client for bucket creation, following the exact pattern shown in your EC2 instance creation examples.",
+        "D": "You should always hardcode the region as us-east-1 in the script, since training exercises and most default buckets are created without needing any location constraint."
+      },
+      "correctAnswer": "A",
+      "tag": "Python boto3 S3 Bucket Creation",
+      "difficulty": "Extremely Hard",
+      "explanation": "AWS requires the LocationConstraint for regions other than us-east-1 when using the client in a specific region. Option A matches boto3 documentation and your create-bucket.py notes. Other options cause creation failures or misuse resource vs client."
+    },
+    {
+      "id": 10,
+      "text": "After creating an EC2 instance and an S3 bucket during your Python boto3 lab, you now need to clean up the resources safely. The deletion order is critical to avoid errors or orphaned resources.  \r\n\r\nHow should you handle this situation while applying proper Python cloud resource cleanup flow from your notes?",
+      "options": {
+        "A": "You should first terminate the EC2 instance using `ec2.terminate_instances(InstanceIds=[instance_id])` inside a try-except block, and only then proceed with emptying and deleting the S3 bucket to respect dependency order.",
+        "B": "You should delete the S3 bucket and its objects first, then terminate the EC2 instance, because S3 operations complete faster and can safely run in parallel with EC2 termination.",
+        "C": "You should delete both resources simultaneously in a single boto3 session without any specific order, since AWS automatically manages all inter-resource dependencies during cleanup.",
+        "D": "You should only empty and delete the S3 bucket while skipping EC2 termination, because your training notes focus primarily on S3 object deletion rather than full EC2 resource cleanup."
+      },
+      "correctAnswer": "A",
+      "tag": "Python Cleanup Order EC2 then S3",
+      "difficulty": "Extremely Hard",
+      "explanation": "Your notes explicitly state EC2 must be terminated before S3 deletion in the cleanup-resources.py example to follow proper flow. Option A respects dependencies with try-except. Other options reverse or ignore order."
+    },
+    {
+      "id": 11,
+      "text": "You are enhancing a server monitoring script to send an email alert when CPU usage exceeds 80%. The script uses top, grep, awk, and bc for floating-point comparison.  \r\n\r\nHow should you handle this situation while applying advanced Bash monitoring and conditional alerting techniques?",
+      "options": {
+        "A": "You should calculate CPU_USAGE with command substitution from top output, then use a floating-point comparison with bc inside an if condition to trigger `echo \"High CPU...\" | mail -s \"Alert\" admin@example.com` only when the threshold is breached.",
+        "B": "You should always send the email alert on every run, because consistent notifications are more important than checking actual CPU values in production environments.",
+        "C": "You should use integer-only comparison without bc, since top output is always whole numbers and floating-point math is unnecessary in monitoring scripts.",
+        "D": "You should replace the entire logic with a Python boto3 call to CloudWatch, because Bash scripts should never handle alerting when Python is available for cloud integration."
+      },
+      "correctAnswer": "A",
+      "tag": "Advanced CPU Monitoring with Alert",
+      "difficulty": "Extremely Hard",
+      "explanation": "The calculation with top/grep/awk/bc and conditional mail command directly extends your advanced server monitoring script. Option A applies floating-point comparison correctly."
+    },
+    {
+      "id": 12,
+      "text": "Your team requires an automated log analyzer script that counts error lines in an nginx error.log file and raises an alert if the count exceeds 10.  \r\n\r\nHow should you handle this situation while applying grep, wc, and conditional logic for log analysis in Bash?",
+      "options": {
+        "A": "You should use `ERROR_COUNT=$(grep -i \"error\" $LOG_FILE | wc -l)` followed by an if condition to print \"High error rate detected!\" only when the count is greater than 10.",
+        "B": "You should count all lines in the log file without filtering for \"error\", because any log activity could indicate potential problems that need alerting.",
+        "C": "You should use case-insensitive grep but skip wc -l, relying on the exit code of grep alone to determine if errors exist.",
+        "D": "You should run the analysis inside a Docker container check script, since container health monitoring patterns are more suitable for log-related tasks."
+      },
+      "correctAnswer": "A",
+      "tag": "Automated Log Analyzer",
+      "difficulty": "Hard",
+      "explanation": "grep -i with wc -l and threshold check matches the log analyzer example. Option A provides clear conditional alerting."
+    },
+    {
+      "id": 13,
+      "text": "You need to implement a function in Bash that can be reused to greet different team members by accepting a name as an argument.  \r\n\r\nHow should you handle this situation while applying function definition and argument handling in shell scripting?",
+      "options": {
+        "A": "You should define `greet() { echo \"Hello, $1!\"; }` and call it with `greet \"Akshiv\"` or `greet \"Team\"` to reuse the greeting logic with the passed parameter.",
+        "B": "You should write the echo statement repeatedly for each name instead of a function, because functions add unnecessary complexity to simple scripts.",
+        "C": "You should define the function without parentheses and call it without arguments, since all variables are globally available in Bash.",
+        "D": "You should implement the greeting using a Python function and call it via subprocess, aligning with cloud automation examples that favor Python."
+      },
+      "correctAnswer": "A",
+      "tag": "Bash Functions with Arguments",
+      "difficulty": "Medium",
+      "explanation": "Defining functions with () and using $1 for parameters follows your functions example exactly."
+    },
+    {
+      "id": 14,
+      "text": "In a combined automation exercise, you want to ask the user for their name at runtime, validate that it is not empty, greet them using a function, and then process a fixed number of steps in a loop.  \r\n\r\nHow should you handle this situation while applying read, conditional validation, functions, and loops together in one Bash script?",
+      "options": {
+        "A": "You should use `read name`, check `if [ -z \"$name\" ]`, define a greet function, call it with the name, and run a for loop from 1 to 3 to simulate processing steps.",
+        "B": "You should hardcode the name variable and skip user input and validation, because interactive scripts are not suitable for automation or cron-based execution.",
+        "C": "You should use a while loop for everything including greeting, without defining any functions, to keep the script as linear as possible.",
+        "D": "You should replace the entire interactive logic with boto3 calls to AWS IAM for user management, since Python cloud scripting is the preferred approach."
+      },
+      "correctAnswer": "A",
+      "tag": "Combined Input, Validation, Function, Loop",
+      "difficulty": "Extremely Hard",
+      "explanation": "Integrating read, -z check, function call, and for loop demonstrates the \"Combine all together\" advanced example in your notes."
+    },
+    {
+      "id": 15,
+      "text": "You are writing a Git auto-commit script that stages all changes, commits with a standard message, and pushes to the main branch as part of routine configuration management.  \r\n\r\nHow should you handle this situation while applying Git commands in Bash automation?",
+      "options": {
+        "A": "You should run `git add .`, followed by `git commit -m \"Automated commit\"`, and then `git push origin main` in sequence to keep the repository updated automatically.",
+        "B": "You should skip the commit and push steps, performing only `git add .`, because actual commits should always be done manually with descriptive messages.",
+        "C": "You should use `git pull` before adding changes, because pulling latest code must precede any local modifications in automation scripts.",
+        "D": "You should wrap the Git commands inside a Python script using subprocess, because all version control operations should align with boto3-style cloud automation."
+      },
+      "correctAnswer": "A",
+      "tag": "Git Auto Commit Script",
+      "difficulty": "Hard",
+      "explanation": "The sequence git add → commit → push matches your Git auto commit example."
+    },
+    {
+      "id": 16,
+      "text": "During server provisioning automation, you need to update package lists, install nginx, start the service, and enable it to start on boot.  \r\n\r\nHow should you handle this situation while applying apt and systemctl commands in a provisioning script?",
+      "options": {
+        "A": "You should execute `sudo apt update -y`, `sudo apt install nginx -y`, `sudo systemctl start nginx`, and `sudo systemctl enable nginx` in that order to fully provision and configure the web server.",
+        "B": "You should run only the install command and skip update, start, and enable steps, because modern package managers handle all configuration automatically.",
+        "C": "You should use yum instead of apt and avoid systemctl entirely, since different Linux distributions require completely separate command sets.",
+        "D": "You should perform all steps without sudo, assuming the script runs under a privileged user created via previous Python boto3 IAM operations."
+      },
+      "correctAnswer": "A",
+      "tag": "Server Provisioning Script",
+      "difficulty": "Hard",
+      "explanation": "The apt update/install + systemctl start/enable sequence is taken directly from your server provisioning example."
+    },
+    {
+      "id": 17,
+      "text": "You have a Docker container health check script that verifies whether a specific container named \"nginx\" is running and prints an appropriate status message.  \r\n\r\nHow should you handle this situation while applying Docker command integration in Bash scripting?",
+      "options": {
+        "A": "You should use `if docker ps | grep $CONTAINER > /dev/null; then echo \"Container is running\"; else echo \"Container is not running\"; fi` to suppress output and provide clear status feedback.",
+        "B": "You should always echo \"Container is running\" without any check, because assuming containers are healthy simplifies monitoring logic.",
+        "C": "You should use `docker inspect` with complex JSON parsing instead of grep on docker ps, since simple pattern matching is unreliable.",
+        "D": "You should replace the Docker check with a Python boto3 EC2 instance status query, because cloud resource monitoring should use AWS SDKs exclusively."
+      },
+      "correctAnswer": "A",
+      "tag": "Docker Container Health Check",
+      "difficulty": "Hard",
+      "explanation": "The docker ps | grep with > /dev/null pattern matches your Docker health check script exactly."
+    },
+    {
+      "id": 18,
+      "text": "In an advanced auto-healing script for failed services, you check the nginx status and restart it only if it is inactive, printing clear messages for both cases.  \r\n\r\nHow should you handle this situation while applying robust conditional service management?",
+      "options": {
+        "A": "You should capture `STATUS=$(systemctl is-active nginx)` and restart with appropriate echo messages only when the status is not \"active\", implementing lightweight self-healing.",
+        "B": "You should restart the service on every execution and log the action, because frequent restarts prevent any possibility of undetected failures.",
+        "C": "You should check status using journalctl logs instead of systemctl is-active, because recent log entries provide better failure detection.",
+        "D": "You should integrate the check with a cron job that runs every second, ignoring any conditional logic to ensure constant monitoring."
+      },
+      "correctAnswer": "A",
+      "tag": "Auto-Healing Script",
+      "difficulty": "Hard",
+      "explanation": "The exact STATUS check and conditional restart matches your auto-healing example."
+    },
+    {
+      "id": 19,
+      "text": "You need to upload a local file to an existing S3 bucket using a Python boto3 script as part of your cloud automation workflow.  \r\n\r\nHow should you handle this situation while applying boto3 S3 upload functionality?",
+      "options": {
+        "A": "You should initialize an s3 client and call `s3.upload_file(file_name, bucket_name, object_name)` with the correct local filename, bucket, and object key to transfer the file successfully.",
+        "B": "You should use the ec2 resource object for file upload, following the same pattern as EC2 instance creation examples in your notes.",
+        "C": "You should skip the upload and only create the bucket, because file operations are handled automatically after bucket creation in boto3.",
+        "D": "You should hardcode all parameters without using variables, since training scripts do not require reusable parameter handling."
+      },
+      "correctAnswer": "A",
+      "tag": "Python boto3 S3 Upload",
+      "difficulty": "Medium",
+      "explanation": "upload_file with client follows your upload-s3.py project example."
+    },
+    {
+      "id": 20,
+      "text": "Your team is combining Bash and Python in a hybrid automation pipeline where a Bash script triggers a Python boto3 cleanup after certain conditions are met.  \r\n\r\nHow should you handle this situation while applying integration between shell scripting and Python cloud tasks?",
+      "options": {
+        "A": "You should use command substitution or subprocess in Bash to call the Python cleanup script only after verifying prerequisites like disk usage or service status.",
+        "B": "You should avoid any Bash involvement and rewrite everything in pure Python, because mixing languages complicates maintenance in DevOps environments.",
+        "C": "You should run the Python script first unconditionally, then use Bash only for final echo statements, reversing the logical dependency flow.",
+        "D": "You should use cron to schedule both independently without any triggering logic between Bash and Python components."
+      },
+      "correctAnswer": "A",
+      "tag": "Hybrid Bash + Python Automation",
+      "difficulty": "Extremely Hard",
+      "explanation": "Triggering Python from Bash based on conditions respects both languages' strengths as shown across your notes."
+    },
+    {
+      "id": 21,
+      "text": "You want to make a simple Bash script that accepts two command-line arguments representing source and destination paths for a backup operation.  \r\n\r\nHow should you handle this situation while applying argument passing in shell scripting?",
+      "options": {
+        "A": "You should reference `$1` as the source and `$2` as the destination inside the script and use `$@` if you need to handle all arguments together for flexibility.",
+        "B": "You should hardcode the paths inside the script and ignore any passed arguments, because automation scripts should not rely on external input.",
+        "C": "You should use `read` to ask for paths interactively instead of arguments, since command-line parameters are less reliable than user prompts.",
+        "D": "You should pass arguments directly to a Python boto3 function, converting the entire logic to cloud SDK calls."
+      },
+      "correctAnswer": "A",
+      "tag": "Passing Arguments to Script",
+      "difficulty": "Medium",
+      "explanation": "$1, $2, and $@ usage matches your arguments example."
+    },
+    {
+      "id": 22,
+      "text": "In a Jenkins build simulation script, you run `mvn clean package` and then check the exit code to determine success or failure.  \r\n\r\nHow should you handle this situation while applying exit code handling with $? in Bash?",
+      "options": {
+        "A": "You should use `if [ $? -eq 0 ]; then echo \"Build successful\"; else echo \"Build failed\"; fi` immediately after the mvn command to branch based on the previous command's result.",
+        "B": "You should always assume success and print \"Build successful\" without checking $?, because Maven rarely fails in well-configured environments.",
+        "C": "You should check the exit code before running mvn, which is the correct order for proper error handling in scripts.",
+        "D": "You should replace the Maven command with a Python equivalent using boto3, since build processes should integrate with cloud services."
+      },
+      "correctAnswer": "A",
+      "tag": "Jenkins Build Script with Exit Code",
+      "difficulty": "Hard",
+      "explanation": "Checking $? after mvn directly follows your Jenkins build script example."
+    },
+    {
+      "id": 23,
+      "text": "You need to schedule your disk usage alert script to run every day at midnight using cron for continuous monitoring.  \r\n\r\nHow should you handle this situation while applying task scheduling concepts alongside your Bash scripts?",
+      "options": {
+        "A": "You should edit the crontab with `0 0 * * * /path/to/disk_alert.sh` to ensure the script executes automatically at the specified time every day.",
+        "B": "You should run the script manually each day instead of using cron, because scheduled jobs reduce visibility into script behavior.",
+        "C": "You should use a while true loop with sleep inside the script itself rather than cron, to keep everything contained in one file.",
+        "D": "You should schedule it via a Python boto3 CloudWatch event instead of Linux cron, aligning all automation with AWS services."
+      },
+      "correctAnswer": "A",
+      "tag": "Cron Job Scheduling",
+      "difficulty": "Medium",
+      "explanation": "Standard cron syntax for daily execution aligns with your task scheduling syllabus topic."
+    },
+    {
+      "id": 24,
+      "text": "During an incident response exercise, your server health script must include clear section headers and footers for readable output when run by the operations team.  \r\n\r\nHow should you handle this situation while applying echo statements for structured reporting in Bash?",
+      "options": {
+        "A": "You should use multiple `echo \"===== SERVER HEALTH REPORT =====\"` lines with relevant system commands in between to create a well-formatted, easy-to-read report.",
+        "B": "You should output only raw command results without any echo headers, because additional text makes parsing by monitoring tools more difficult.",
+        "C": "You should redirect all output to a log file silently without printing to the terminal, since reports are meant for logging rather than direct viewing.",
+        "D": "You should format the output using Python JSON handling and print it as structured data instead of plain text."
+      },
+      "correctAnswer": "A",
+      "tag": "Server Health Report Formatting",
+      "difficulty": "Medium",
+      "explanation": "Echo headers match the exact structure in your server health monitoring script."
+    },
+    {
+      "id": 25,
+      "text": "You are reviewing a log cleanup script that uses find with -mtime +7 -delete and want to add proper error handling in case the directory does not exist.  \r\n\r\nHow should you handle this situation while applying error handling strategies in Bash automation?",
+      "options": {
+        "A": "You should add a preliminary check `if [ ! -d \"$LOG_DIR\" ]; then echo \"Directory does not exist\"; exit 1; fi` before running the find command to prevent unexpected failures.",
+        "B": "You should let the find command fail naturally without any checks, because error handling adds unnecessary complexity to simple cleanup scripts.",
+        "C": "You should use set -e at the top of the script so that any error immediately exits, relying on Bash's built-in strict mode.",
+        "D": "You should wrap the entire script in a Python try-except block using subprocess, following cloud automation error handling patterns."
+      },
+      "correctAnswer": "A",
+      "tag": "Error Handling in Cleanup",
+      "difficulty": "Extremely Hard",
+      "explanation": "Pre-check with [ ! -d ] + exit prevents failures, extending your error handling syllabus topic."
+    },
+    {
+      "id": 26,
+      "text": "In a production-like scenario, you must ensure that your backup script runs only if disk usage is below 90% to avoid filling the backup drive.  \r\n\r\nHow should you handle this situation while integrating disk check logic with backup operations?",
+      "options": {
+        "A": "You should first calculate current usage with df and awk, then use an if condition to proceed with the tar backup only when usage is safely below the threshold.",
+        "B": "You should always perform the backup regardless of disk usage, because backups are critical and space checks can be handled by the storage system itself.",
+        "C": "You should check usage after the backup completes, since post-operation validation is more accurate for reporting purposes.",
+        "D": "You should replace the entire check and backup with a single boto3 S3 upload call, since cloud storage eliminates local disk concerns."
+      },
+      "correctAnswer": "A",
+      "tag": "Conditional Backup with Disk Check",
+      "difficulty": "Extremely Hard",
+      "explanation": "Pre-check before tar integrates disk alert logic with backup script."
+    },
+    {
+      "id": 27,
+      "text": "You need to create a reusable Bash function that restarts any given service name passed as an argument, with status checking.  \r\n\r\nHow should you handle this situation while applying advanced function usage with parameters?",
+      "options": {
+        "A": "You should define a function that accepts $1 as the service name, checks its status with systemctl, and restarts only if inactive, making it reusable across different services.",
+        "B": "You should hardcode \"nginx\" inside the function and ignore the argument, because most production scripts only manage common services like nginx.",
+        "C": "You should avoid functions and duplicate the restart code for each service, keeping the script simple and linear.",
+        "D": "You should implement the restart logic in Python with boto3 SSM Run Command instead of local systemctl."
+      },
+      "correctAnswer": "A",
+      "tag": "Reusable Service Restart Function",
+      "difficulty": "Hard",
+      "explanation": "Parameterized function extends your functions and service restart examples."
+    },
+    {
+      "id": 28,
+      "text": "After uploading a file to S3 using Python, you realize the script should also handle potential exceptions gracefully during the upload process.  \r\n\r\nHow should you handle this situation while applying error handling in Python boto3 scripts?",
+      "options": {
+        "A": "You should wrap the upload_file call in a try-except block that catches Exception and prints a meaningful error message including the exception details.",
+        "B": "You should omit any exception handling, allowing the script to crash naturally, because unhandled errors provide better debugging information in training environments.",
+        "C": "You should check if the file exists locally before upload but skip AWS-specific exceptions, since boto3 handles them internally.",
+        "D": "You should convert the upload to a Bash curl command instead of Python to avoid exception handling complexity."
+      },
+      "correctAnswer": "A",
+      "tag": "Python boto3 Error Handling",
+      "difficulty": "Hard",
+      "explanation": "try-except around upload follows syllabus emphasis on proper error handling in Python automation."
+    },
+    {
+      "id": 29,
+      "text": "In an extremely integrated scenario, your team combines a Bash deployment script with a Python cleanup step that runs only on successful deployment, ensuring resources are not left behind if the deployment fails.  \r\n\r\nHow should you handle this situation while applying exit code propagation between Bash and Python automation?",
+      "options": {
+        "A": "You should check the exit code of the deployment steps in Bash and conditionally call the Python cleanup script only if all steps succeed with exit code 0.",
+        "B": "You should always run the Python cleanup regardless of deployment outcome, because resource cleanup must happen unconditionally.",
+        "C": "You should run the Python script first and then the Bash deployment, reversing the logical sequence.",
+        "D": "You should merge everything into one Python script using subprocess for Bash commands to eliminate exit code handling between languages."
+      },
+      "correctAnswer": "A",
+      "tag": "Exit Code Propagation Hybrid Script",
+      "difficulty": "Extremely Hard",
+      "explanation": "Checking Bash exit code before Python cleanup ensures safe integrated flow."
+    },
+    {
+      "id": 30,
+      "text": "During a full DevOps exercise review, you need to decide the best persistent storage location for environment variables that should be available to both login and non-login interactive shells while avoiding duplication issues.  \r\n\r\nHow should you handle this situation while applying best practices for environment variable persistence in Bash?",
+      "options": {
+        "A": "You should place exported variables primarily in ~/.bashrc and source ~/.bashrc from ~/.bash_profile (or ~/.profile) so that settings are consistently loaded for both login and interactive shells without redundant additions.",
+        "B": "You should put all variables exclusively in ~/.profile and never use ~/.bashrc, because .profile is loaded for all shell types and is the only file needed.",
+        "C": "You should use ~/.bash_profile exclusively and avoid sourcing .bashrc, since bash_profile handles environment variables for login shells while ignoring interactive ones.",
+        "D": "You should rely on exporting variables inside scripts only and never use configuration files, because persistent files can cause conflicts across different shell sessions."
+      },
+      "correctAnswer": "A",
+      "tag": "Persistent Environment Variables Best Practice",
+      "difficulty": "Extremely Hard",
+      "explanation": "Placing settings in ~/.bashrc and sourcing from .bash_profile/.profile avoids duplication while supporting both shell types, consistent with standard practices and your persistence example."
+    }
+  ],
+  "timeLimit": 3600,
+  "createdAt": "2026-04-05T16:00:22.637Z"
+}
